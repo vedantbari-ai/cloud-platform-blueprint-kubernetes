@@ -125,8 +125,8 @@ logging:
 bastion:
   create: true
   instance_type: "t2.micro"
-  username: "eksadmin"
-  password: "YourSecurePassword123!"
+  username: "ssm-user" # Default user for SSM Session Manager
+  password: null # Use null to disable password authentication and rely on SSM Session Manager
   existing_role_arn: ""
 
   # Restrict SSH access to your VPN or Specific IPs
@@ -135,10 +135,9 @@ bastion:
       from_port: 22
       to_port: 22
       protocol: "tcp"
-      cidr_blocks:
-        - "0.0.0.0/0"
+      cidr_blocks: # IMPORTANT: Replace with your actual trusted CIDR blocks
+        - "YOUR_TRUSTED_IP_RANGE/32" # e.g., "203.0.113.45/32" for a single IP
         # - "10.200.0.0/16"     # Example Corporate VPN CIDR
-        # - "198.51.100.45/32"  # Example Specific Static Public IP
 
   egress_rules:
     - description: "Allow all outbound traffic"
