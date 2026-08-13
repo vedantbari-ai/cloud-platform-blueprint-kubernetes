@@ -6,7 +6,7 @@ locals {
   client_name = local.path_parts[length(local.path_parts) - 2]
 
   # 2. Safely locate the YAML file relative to this directory (up 4 levels)
-  yaml_file_path = "${get_original_terragrunt_dir()}/../../../../12-platform-config/clients/${local.client_name}/${local.env_name}.yaml"
+  yaml_file_path = "${get_original_terragrunt_dir()}/../../../../12-platform-config/clients/${local.client_name}/infra/${local.env_name}.yaml"
   
   # 3. Decode the YAML
   config = yamldecode(file(local.yaml_file_path))

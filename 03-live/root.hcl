@@ -11,7 +11,7 @@ locals {
   env_name    = local.path_parts[2]
 
   # 2. Safely locate the 12-platform-config folder relative to 03-live/
-  yaml_file_path = "${get_parent_terragrunt_dir()}/../12-platform-config/clients/${local.client_name}/${local.env_name}.yaml"
+  yaml_file_path = "${get_parent_terragrunt_dir()}/../12-platform-config/clients/${local.client_name}/infra/${local.env_name}.yaml"
 
   # 3. Decode the YAML
   config     = yamldecode(file(local.yaml_file_path))

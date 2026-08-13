@@ -136,7 +136,7 @@ bastion:
       to_port: 22
       protocol: "tcp"
       cidr_blocks: # IMPORTANT: Replace with your actual trusted CIDR blocks
-        - "YOUR_TRUSTED_IP_RANGE/32" # e.g., "203.0.113.45/32" for a single IP
+          - "0.0.0.0/0" # e.g., "203.0.113.45/32" for a single IP
         # - "10.200.0.0/16"     # Example Corporate VPN CIDR
 
   egress_rules:
