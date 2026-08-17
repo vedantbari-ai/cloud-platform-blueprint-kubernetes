@@ -1,58 +1,38 @@
-############################################################
-# KMS for State Bucket Encryption
-############################################################
+# 1. Enable Essential GCP APIs
+resource "google_project_service" "apis" {
+  for_each = toset([
+    "compute.googleapis.com",
+    "container.googleapis.com",
+    "storage.googleapis.com",
+    "file.googleapis.com",
+    "serviceusage.googleapis.com"
+  ])
 
-resource "google_kms_key_ring" "terraform_state" {
-  project  = var.project_id
-  name     = var.key_ring_name
-  location = var.location
+  service            = each.key
+  disable_on_destroy = false
 }
 
-resource "google_kms_crypto_key" "terraform_state" {
-  name            = var.crypto_key_name
-  key_ring        = google_kms_key_ring.terraform_state.id
-  rotation_period = "100000s" # Example rotation period
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-############################################################
-# GCS Bucket for Terraform State
-############################################################
-
-resource "google_storage_bucket" "terraform_state" {
-  project                  = var.project_id
-  name                     = var.bucket_name
-  location                 = var.location
-  force_destroy            = var.force_destroy
-  storage_class            = "STANDARD"
-  public_access_prevention = "enforced"
+# 2. GCS Bucket for Terragrunt Remote State
+resource "google_storage_bucket" "tf_state" {
+  name                        = var.state_bucket_name
+  location                    = var.region
+  uniform_bucket_level_access = true
+  force_destroy               = false
 
   versioning {
     enabled = true
   }
 
-  encryption {
-    default_kms_key_name = google_kms_crypto_key.terraform_state.id
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      num_newer_versions = 5
+    }
   }
 
-  labels = var.labels
-}
+  labels = var.tags
 
-############################################################
-# IAM Binding for GCS Bucket
-############################################################
-
-data "google_project" "project" {
-  project_id = var.project_id
-}
-
-# Grant the KMS Encrypter/Decrypter role to the GCS service account for the project
-# This allows GCS to use the key to encrypt/decrypt objects in the bucket.
-resource "google_kms_crypto_key_iam_member" "gcs_kms_access" {
-  crypto_key_id = google_kms_crypto_key.terraform_state.id
-  role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
+  depends_on = [google_project_service.apis]
 }
