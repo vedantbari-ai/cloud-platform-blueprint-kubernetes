@@ -1,56 +1,53 @@
-# 1. VPC Network
-resource "google_compute_network" "vpc" {
-  count                   = var.create_vpc ? 1 : 0
-  name                    = var.vpc_name
-  auto_create_subnetworks = false
-  routing_mode            = "REGIONAL"
+module "vpc" {
+  source  = "terraform-google-modules/network/google"
+  version = "~> 9.0"
+
+  project_id   = var.project_id
+  network_name = var.vpc_name
+  routing_mode = "REGIONAL"
+
+  subnets = [
+    {
+      subnet_name               = var.subnet_name
+      subnet_ip                 = var.subnet_cidr
+      subnet_region             = var.region
+      subnet_private_access     = true
+      
+      # Now pulling dynamic values from module variables
+      subnet_flow_logs          = var.flow_logs
+      subnet_flow_logs_interval = var.flow_logs_interval
+      subnet_flow_logs_sampling = var.flow_logs_sampling
+      subnet_flow_logs_metadata = var.flow_logs_metadata
+    }
+  ]
+
+  secondary_ranges = {
+    (var.subnet_name) = [
+      {
+        range_name    = var.pod_range_name
+        ip_cidr_range = var.pod_range_cidr
+      },
+      {
+        range_name    = var.svc_range_name
+        ip_cidr_range = var.svc_range_cidr
+      }
+    ]
+  }
 }
 
-# 2. Single Regional Subnet with GKE Secondary Ranges
-resource "google_compute_subnetwork" "subnet" {
-  count                    = var.create_vpc ? 1 : 0
-  name                     = var.subnet_name
-  ip_cidr_range            = var.subnet_cidr
-  region                   = var.region
-  network                  = google_compute_network.vpc[0].id
-  private_ip_google_access = true
-
-  secondary_ip_range {
-    range_name    = var.pod_range_name
-    ip_cidr_range = var.pod_range_cidr
-  }
-
-  secondary_ip_range {
-    range_name    = var.svc_range_name
-    ip_cidr_range = var.svc_range_cidr
-  }
-}
-
-# 3. Cloud Router & Cloud NAT for Outbound Internet
+# Cloud Router & NAT for Outbound Internet Access
 resource "google_compute_router" "router" {
-  count   = var.create_vpc ? 1 : 0
   name    = "${var.vpc_name}-router"
   region  = var.region
-  network = google_compute_network.vpc[0].id
+  project = var.project_id
+  network = module.vpc.network_id
 }
 
 resource "google_compute_router_nat" "nat" {
-  count                              = var.create_vpc ? 1 : 0
   name                               = "${var.vpc_name}-nat"
-  router                             = google_compute_router.router[0].name
+  router                             = google_compute_router.router.name
   region                             = var.region
+  project                            = var.project_id
   nat_ip_allocate_option             = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
-}
-
-# 4. Data Source for Existing VPC
-data "google_compute_network" "existing" {
-  count = var.create_vpc ? 0 : 1
-  name  = var.vpc_name
-}
-
-data "google_compute_subnetwork" "existing" {
-  count  = var.create_vpc ? 0 : 1
-  name   = var.subnet_name
-  region = var.region
 }

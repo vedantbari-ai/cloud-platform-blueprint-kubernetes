@@ -77,7 +77,7 @@ This bootstrap phase is unique because the remote state backend (the GCS bucket)
     remote_state {
       backend = "gcs"
       config = {
-        bucket  = "nuclesteq-gcp-tf-state-${include.root.locals.config.client.name}-${include.root.locals.config.environment}"
+        bucket  = include.root.locals.config.bootstrap.state_bucket_name
         prefix  = "bootstrap" # Or any desired prefix for the bootstrap state
         project = include.root.locals.config.gcp.project_id
       }

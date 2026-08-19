@@ -19,7 +19,7 @@ gcp:
 
 # Dedicated Bootstrap Configuration Section
 bootstrap:
-  state_bucket_name: "nuclesteq-gcp-tf-state-client-a-dev"
+  state_bucket_name: "testing-gcp-tf-state-client-a-dev"
 
 # Minimal VPC & Networking Configuration
 vpc:

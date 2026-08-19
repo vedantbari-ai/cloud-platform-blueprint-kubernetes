@@ -9,21 +9,28 @@ terraform {
 
 dependency "vpc" {
   config_path = "../02-vpc"
+
+  # UPDATED MOCK OUTPUTS
   mock_outputs = {
-    vpc_name    = "mock-vpc"
-    subnet_name = "mock-subnet"
+    network_name      = "client-a-dev-vpc"
+    network_self_link = "projects/eks-terraform/global/networks/client-a-dev-vpc"
+    subnet_name       = "dev-gke-subnet"
+    subnet_self_link  = "projects/eks-terraform/regions/asia-south1/subnetworks/dev-gke-subnet"
   }
 }
-
 inputs = {
-  project_id     = include.root.locals.config.gcp.project_id
-  region         = include.root.locals.config.gcp.region
-  zone           = include.root.locals.config.gcp.zone
-  create_bastion = include.root.locals.config.bastion.create
-  bastion_name   = include.root.locals.config.bastion.name
-  machine_type   = include.root.locals.config.bastion.machine_type
-  disk_size_gb   = include.root.locals.config.bastion.disk_size_gb
-  vpc_name       = dependency.vpc.outputs.vpc_name
-  subnet_name    = dependency.vpc.outputs.subnet_name
-  tags           = include.root.locals.config.gcp.tags
+  project_id       = include.root.locals.config.gcp.project_id
+  region           = include.root.locals.config.gcp.region
+  zone             = include.root.locals.config.gcp.zone
+  
+  bastion_name     = include.root.locals.config.bastion.name
+  machine_type     = include.root.locals.config.bastion.machine_type
+  disk_size_gb     = include.root.locals.config.bastion.disk_size_gb
+  
+  # Bind dynamic outputs from the VPC module dependency
+  vpc_self_link    = dependency.vpc.outputs.network_self_link
+  subnet_self_link = dependency.vpc.outputs.subnet_self_link
+  
+  tags             = include.root.locals.config.gcp.tags
 }
+

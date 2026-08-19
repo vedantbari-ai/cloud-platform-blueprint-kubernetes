@@ -1,84 +1,57 @@
-# 1. GKE Cluster (Zonal, Cost-Optimized for R&D)
-resource "google_container_cluster" "primary" {
-  name                     = var.cluster_name
-  location                 = var.zone
-  project                  = var.project_id
-  remove_default_node_pool = true
-  initial_node_count       = 1
-  deletion_protection      = var.delete_protection
+module "gke" {
+  source  = "terraform-google-modules/kubernetes-engine/google"
+  version = "~> 40.0"
 
-  network    = var.vpc_name
-  subnetwork = var.subnet_name
+  project_id                 = var.project_id
+  name                       = var.cluster_name
+  region                     = var.region
+  zones                      = [var.zone]
+  
+  network                    = var.vpc_name
+  subnetwork                 = var.subnet_name
+  
+  # IP Allocation Policy (VPC-Native)
+  ip_range_pods              = var.pod_range_name
+  ip_range_services          = var.svc_range_name
+  
+  # Cluster Version & Release Channel
+  kubernetes_version         = var.cluster_version
+  release_channel            = var.release_channel
+  deletion_protection        = var.delete_protection
+  
+  remove_default_node_pool   = true
+  
+  # Security Addons
+  identity_namespace          = var.workload_identity_enabled ? "enabled" : null
+  enable_secret_manager_addon = var.secret_manager_enabled
 
-  networking_mode = "VPC_NATIVE"
+  # Core Addons
+  http_load_balancing        = var.cluster_addons.http_load_balancing
+  horizontal_pod_autoscaling = var.cluster_addons.horizontal_pod_autoscaling
+  filestore_csi_driver       = var.enable_filestore_csi
 
-  ip_allocation_policy {
-    cluster_secondary_range_name  = var.pod_range_name
-    services_secondary_range_name = var.svc_range_name
-  }
-
-  release_channel {
-    channel = var.release_channel
-  }
-
-# Replace the static block with this dynamic block
-  dynamic "secret_manager_config" {
-    for_each = var.secret_manager_enabled ? [1] : []
-    content {
-      enabled = true
+  # Node Pools Configuration mapped from YAML
+  node_pools = [
+    {
+      name              = "${var.cluster_name}-node-pool"
+      machine_type      = var.machine_type
+      node_count        = var.node_count
+      min_count         = var.enable_autoscaling ? var.min_nodes : null
+      max_count         = var.enable_autoscaling ? var.max_nodes : null
+      disk_size_gb      = var.disk_size_gb
+      disk_type         = var.disk_type
+      auto_upgrade      = true
+      auto_repair       = true
     }
-  }
-  workload_identity_config {
-    workload_pool = "${var.project_id}.svc.id.goog"
-  }
+  ]
 
-
-
-  addons_config {
-    http_load_balancing {
-      disabled = !var.cluster_addons.http_load_balancing
-    }
-    horizontal_pod_autoscaling {
-      disabled = !var.cluster_addons.horizontal_pod_autoscaling
-    }
-    gce_persistent_disk_csi_driver_config {
-      enabled = var.cluster_addons.gce_csi_driver
-    }
-    # Add Filestore CSI Driver for NFS File Storage
-    gcp_filestore_csi_driver_config {
-      enabled = var.enable_filestore_csi
-    }
-  }
-
-  resource_labels = var.tags
-}
-
-# 2. Separately Managed Node Pool
-resource "google_container_node_pool" "node_pool" {
-  name       = "${var.cluster_name}-node-pool"
-  location   = var.zone
-  project    = var.project_id
-  cluster    = google_container_cluster.primary.name
-  node_count = var.node_count
-
-  autoscaling {
-    min_node_count = var.min_nodes
-    max_node_count = var.max_nodes
-  }
-
-  management {
-    auto_repair  = true
-    auto_upgrade = true
-  }
-
-  node_config {
-    machine_type = var.machine_type
-    disk_size_gb = var.disk_size_gb
-    disk_type    = "pd-standard"
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
+  node_pools_oauth_scopes = {
+    all = [
+      "https://www.googleapis.com/auth/cloud-platform",
     ]
-    labels = var.tags
+  }
+
+  node_pools_labels = {
+    all = var.tags
   }
 }
-

@@ -1,9 +1,9 @@
 output "bastion_name" {
-  description = "Name of the deployed bastion host"
-  value       = var.create_bastion ? google_compute_instance.bastion[0].name : null
+  value       = module.bastion.hostname
+  description = "The hostname of the bastion instance."
 }
 
-output "bastion_private_ip" {
-  description = "Internal IP address of the bastion host"
-  value       = var.create_bastion ? google_compute_instance.bastion[0].network_interface[0].network_ip : null
+output "bastion_ip" {
+  value       = module.bastion.ip_address
+  description = "The internal IP address of the bastion host."
 }

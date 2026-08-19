@@ -1,16 +1,16 @@
 output "cluster_name" {
-  description = "Name of the GKE cluster"
-  value       = google_container_cluster.primary.name
+  value       = module.gke.name
+  description = "The name of the GKE cluster."
 }
 
 output "cluster_endpoint" {
-  description = "Cluster control plane endpoint"
-  value       = google_container_cluster.primary.endpoint
+  value       = module.gke.endpoint
+  description = "The IP address of the cluster master endpoint."
   sensitive   = true
 }
 
 output "cluster_ca_certificate" {
-  description = "Cluster CA certificate"
-  value       = google_container_cluster.primary.master_auth[0].cluster_ca_certificate
+  value       = module.gke.ca_certificate
+  description = "Public certificate authority data for the cluster."
   sensitive   = true
 }

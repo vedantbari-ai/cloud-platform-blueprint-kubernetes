@@ -5,9 +5,14 @@ resource "google_project_service" "apis" {
     "container.googleapis.com",
     "storage.googleapis.com",
     "file.googleapis.com",
-    "serviceusage.googleapis.com"
+    "serviceusage.googleapis.com",
+    "secretmanager.googleapis.com",
+    "logging.googleapis.com",
+    "iap.googleapis.com",
+    "iamcredentials.googleapis.com"
   ])
 
+  project            = var.project_id
   service            = each.key
   disable_on_destroy = false
 }
@@ -16,6 +21,7 @@ resource "google_project_service" "apis" {
 resource "google_storage_bucket" "tf_state" {
   name                        = var.state_bucket_name
   location                    = var.region
+  project                     = var.project_id
   uniform_bucket_level_access = true
   force_destroy               = false
 

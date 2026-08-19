@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.0.0"
-    }
-  }
-}
-
 # 1. Explicitly Declare the Service Enablement Resource
 resource "google_project_service" "secretmanager" {
   project            = var.project_id
