@@ -1,5 +1,5 @@
 # ==============================================================================
-# GCP PLATFORM CONFIGURATION: CLIENT-A (DEV ENVIRONMENT - MUMBAI)
+# GCP PLATFORM CONFIGURATION: CLIENT-A (DEV/R&D ENVIRONMENT)
 # ==============================================================================
 
 client:
@@ -19,48 +19,52 @@ gcp:
 
 # Dedicated Bootstrap Configuration Section
 bootstrap:
-  state_bucket_name: "nuclesteq-gcp-tf-state-client-a-dev" # Must be globally unique in GCP
+  state_bucket_name: "nuclesteq-gcp-tf-state-client-a-dev"
 
-# VPC & Networking Configuration across Mumbai Zones
+# Minimal VPC & Networking Configuration
 vpc:
   create: true
   vpc_name: "client-a-dev-vpc"
-  network_cidr: "10.100.0.0/16"
-  subnets:
-    - name: "private-gke-subnet-a"
-      cidr: "10.100.0.0/20"
-      region: "asia-south1"
-      zone: "asia-south1-a"
-    - name: "private-gke-subnet-b"
-      cidr: "10.100.16.0/20"
-      region: "asia-south1"
-      zone: "asia-south1-b"
+  network_cidr: "10.100.0.0/24"          # 256 Total Private IPs
+  subnet_name: "dev-gke-subnet"
+  subnet_cidr: "10.100.0.0/24"          # 256 IPs for nodes
   pod_range_name: "pods-range"
-  pod_range_cidr: "10.1.0.0/16"
+  pod_range_cidr: "10.1.0.0/21"         # 2,048 IPs for pods (minimal for R&D)
   svc_range_name: "services-range"
-  svc_range_cidr: "10.2.0.0/16"
+  svc_range_cidr: "10.2.0.0/24"         # 256 IPs for cluster services
 
-# Google Kubernetes Engine (GKE) Cluster Specifications
+
+# Add this section to your existing dev.yaml file
+bastion:
+  create: true
+  name: "client-a-dev-bastion"
+  machine_type: "e2-micro"      # Cost-optimized for R&D (Free-tier eligible/minimal cost)
+  disk_size_gb: 20
+
+# GKE Cluster Specifications (Cost-Optimized for R&D)
 gke:
   cluster_name: "gke-client-a-dev"
   cluster_version: "1.35.6-gke.1710000"
-  release_channel: "regular"
-  machine_type: "e2-standard-4"
-  node_count: 2
-  disk_size_gb: 50
+  release_channel: "REGULAR"
+  machine_type: "e2-medium"             # Low-cost 2 vCPU / 4 GB RAM instance
+  node_count: 1                         # Single node for R&D
+  disk_size_gb: 30                      # Minimal disk size
   enable_autoscaling: true
   min_nodes: 1
-  max_nodes: 5
+  max_nodes: 2
   delete_protection: false
+  enable_filestore_csi: true
+  secretManagerEnabled: true
+  workloadIdentityEnabled: true
   cluster_addons:
     http_load_balancing: true
-    horizontal_pod_autoscaling: true
+    horizontal_pod_autoscaling: false
     gce_csi_driver: true
 
-# Shared Storage Configuration (Cloud Filestore / NFS)
+# Cloud Filestore (Optional: Set create to false if not testing shared NFS)
 storage:
   filestore:
-    create: true
+    create: false
     tier: "STANDARD"
     file_share_name: "shared_vol"
     capacity_gb: 1024

@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: custom-standard-rwx
+provisioner: filestore.csi.storage.gke.io
+volumeBindingMode: Immediate
+allowVolumeExpansion: true
+parameters:
+  tier: standard
+  network: client-a-dev-vpc  # Replace with your actual GKE VPC network name (e.g., default-vpc, custom-network)bb

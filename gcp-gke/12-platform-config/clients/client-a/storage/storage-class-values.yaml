@@ -1,0 +1,4 @@
+storageClassName: "custom-standard-rwx"
+storageProvisioner: "filestore.csi.storage.gke.io" # <--- Added provisioner here
+tier: "standard"
+vpcNetworkName: "client-a-dev-vpc"  # Update with your actual GKE VPC network name

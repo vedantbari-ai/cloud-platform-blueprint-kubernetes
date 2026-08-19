@@ -1,0 +1,25 @@
+ 1958  gcloud compute ssh client-a-dev-bastion --zone=asia-south1-a --tunnel-through-iap
+ 1959  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=client-a-dev-project-id
+ 1960  clear
+ 1961  gcloud auth list
+ 1962  gcloud projects list
+ 1963  gcloud projects add-iam-policy-binding eks-terraform     --member="user:flyingstarling40@gmail.com"     --role="roles/container.clusterViewer"
+ 1964  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=client-a-dev-project-id
+ 1965  gcloud projects add-iam-policy-binding eks-terraform     --member="user:flyingstarling40@gmail.com"     --role="roles/container.clusterAdmin"
+ 1966  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=client-a-dev-project-id
+ 1967  gcloud auth login
+ 1968  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=client-a-dev-project-id
+ 1969  gcloud projects list
+ 1970  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=eks-terraform
+ 1971  sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+ 1972  clear
+ 1973  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=eks-terraform
+ 1974  kubectl get nodes
+
+
+ gke-client-a-dev 
+
+
+ gcloud container clusters describe gke-client-a-dev \
+    --region asia-south1 \
+    --format="value(workloadIdentityConfig.workloadPool)"
