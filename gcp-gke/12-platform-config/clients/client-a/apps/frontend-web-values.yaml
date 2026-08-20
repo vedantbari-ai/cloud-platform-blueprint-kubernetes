@@ -55,10 +55,10 @@ ingress:
     kubernetes.io/ingress.class: "gce"
     # kubernetes.io/ingress.allow-http: "true"
   hosts:
-    - host: "frontend.local" # Replace with your domain or external IP mapping
-      paths:
+    - paths:
         - path: /
           pathType: Prefix
+      # host: "frontend.local" # Replace with your domain or external IP mapping
   tls: []
   #  - secretName: frontend-tls
   #    hosts:

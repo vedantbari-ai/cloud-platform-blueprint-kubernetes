@@ -1,33 +1,34 @@
-variable "chart_path" {
-  description = "Path to the local generic Helm chart"
-  type        = string
-}
-
-variable "release_name" {
-  description = "Helm release name"
-  type        = string
-}
-
-variable "namespace" {
-  description = "Target Kubernetes namespace for the application"
-  type        = string
-}
-
-variable "app_values" {
-  description = "Map of configuration values for the application"
-  type        = any
-}
-
-variable "cluster_endpoint" {
+variable "project_id" {
   type = string
 }
 
-variable "cluster_ca_certificate" {
+variable "release_name" {
+  type = string
+}
+
+variable "chart_path" {
+  type = string
+}
+
+variable "namespace" {
   type = string
 }
 
 variable "timeout" {
-  description = "Timeout in seconds for the Helm release operation"
-  type        = number
-  default     = 300
+  type    = number
+  default = 600
+}
+
+variable "app_values" {
+  type = any
+}
+
+variable "cluster_endpoint" {
+  type        = string
+  description = "The GKE cluster endpoint"
+}
+
+variable "cluster_ca_certificate" {
+  type        = string
+  description = "The GKE cluster CA certificate"
 }

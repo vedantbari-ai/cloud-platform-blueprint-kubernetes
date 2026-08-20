@@ -16,7 +16,7 @@ dependency "gke" {
 }
 
 locals {
-  app_values = yamldecode(file("${get_repo_root()}/gcp-gke/12-platform-config/clients/client-a/apps/frontend-web-values.yaml"))
+  app_values = yamldecode(file("${get_repo_root()}/gcp-gke/12-platform-config/clients/client-a/apps/backend-web-values.yaml"))
 }
 
 inputs = {

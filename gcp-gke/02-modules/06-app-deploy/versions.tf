@@ -16,9 +16,6 @@ terraform {
   }
 }
 
-# variable "cluster_endpoint" { type = string }
-# variable "cluster_ca_certificate" { type = string }
-
 data "google_client_config" "default" {}
 
 provider "kubernetes" {

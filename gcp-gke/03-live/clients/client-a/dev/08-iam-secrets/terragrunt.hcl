@@ -10,6 +10,9 @@ terraform {
 # --- ADD THIS DEPENDENCY ---
 dependency "gke" {
   config_path = "../04-gke" 
+  mock_outputs = {
+    cluster_name = "gke-client-a-dev"
+  }
 }
 # ---------------------------
 

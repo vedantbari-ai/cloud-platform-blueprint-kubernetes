@@ -16,7 +16,7 @@ monitoring:
   grafana:
     enabled: true
     replicas: 1                # <--- Single replica for Grafana
-    defaultDashboardsEnabled: false
+    defaultDashboardsEnabled: true
     defaultDashboardsEditable: true
     defaultDashboardsTimezone: browser
     additionalDataSources:
@@ -31,13 +31,13 @@ monitoring:
       accessModes:
         - ReadWriteOnce
       size: 2Gi
-    resources:
-      requests:
-        cpu: 50m
-        memory: 128Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
+    # resources:
+    #   requests:
+    #     cpu: 50m
+    #     memory: 128Mi
+    #   limits:
+    #     cpu: 200m
+    #     memory: 256Mi
 
   prometheus:
     enabled: true
@@ -46,13 +46,13 @@ monitoring:
       retention: "2d"
       retentionSize: "2GB"
       scrapeInterval: "30s"
-      resources:
-        requests:
-          cpu: 100m
-          memory: 256Mi
-        limits:
-          cpu: 500m
-          memory: 512Mi
+      # resources:
+      #   requests:
+      #     cpu: 100m
+      #     memory: 256Mi
+      #   limits:
+      #     cpu: 500m
+      #     memory: 512Mi
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -96,13 +96,13 @@ loki:
       accessModes:
         - ReadWriteOnce
       size: 10Gi
-    resources:
-      requests:
-        cpu: 100m
-        memory: 256Mi
-      limits:
-        cpu: 500m
-        memory: 512Mi
+    # resources:
+    #   requests:
+    #     cpu: 100m
+    #     memory: 256Mi
+    #   limits:
+    #     cpu: 500m
+    #     memory: 512Mi
   backend:
     replicas: 0
   read:
@@ -163,10 +163,10 @@ alloy:
             url = "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
           }
         }
-    resources:
-      requests:
-        cpu: 50m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
+    # resources:
+    #   requests:
+    #     cpu: 50m
+    #     memory: 64Mi
+    #   limits:
+    #     cpu: 200m
+    #     memory: 256Mi
