@@ -3,6 +3,8 @@
 # Exit immediately if a command exits with a non-zero status
 ##sample example
 # ./create-bootstrap-bucket.sh your-actual-project-id prod-gcp-tf-state-client-b-prod asia-south1
+# ./create-bootstrap-bucket.sh  prod-gcp-tf-state-client-b-prod asia-south1
+
 set -e
 
 # 1. Validate input arguments
