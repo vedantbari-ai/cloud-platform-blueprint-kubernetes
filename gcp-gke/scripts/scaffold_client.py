@@ -64,10 +64,10 @@ def generate_terragrunt_files(config_path):
         vpc_content = render_template("vpc.hcl.template", config_rel_path)
         write_file_if_changed(os.path.join(live_dir, "02-vpc", "terragrunt.hcl"), vpc_content)
 
-    # 3. Bastion Layer
-    if bastion_enabled:
-        bastion_content = render_template("bastion.hcl.template", config_rel_path)
-        write_file_if_changed(os.path.join(live_dir, "03-bastion", "terragrunt.hcl"), bastion_content)
+    # # 3. Bastion Layer
+    # if bastion_enabled:
+    #     bastion_content = render_template("bastion.hcl.template", config_rel_path)
+    #     write_file_if_changed(os.path.join(live_dir, "03-bastion", "terragrunt.hcl"), bastion_content)
 
     # 4. GKE Layer
     gke_content = render_template("gke.hcl.template", config_rel_path)

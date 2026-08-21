@@ -23,3 +23,11 @@
  gcloud container clusters describe gke-client-a-dev \
     --region asia-south1 \
     --format="value(workloadIdentityConfig.workloadPool)"
+
+
+gcloud container clusters describe gke-client-b-prod \
+    --region asia-south1 \
+    --format="value(workloadIdentityConfig.workloadPool)"    
+
+
+gcloud container clusters get-credentials gke-client-b-prod --zone=asia-south1-a --project=eks-terraform
