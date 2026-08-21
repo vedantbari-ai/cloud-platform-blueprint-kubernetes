@@ -31,3 +31,1028 @@ gcloud container clusters describe gke-client-b-prod \
 
 
 gcloud container clusters get-credentials gke-client-b-prod --zone=asia-south1-a --project=eks-terraform
+ 1052  cd iam-secrets/
+ 1053  terragrunt plan
+ 1054  cd ..
+ 1055  ls
+ 1056  cd apps/
+ 1057  terragrunt plan
+ 1058  ls
+ 1059  cd frontend-web/
+ 1060  terragrunt plan
+ 1061  terragrunt apply --auto-approve
+ 1062  terragrunt plan
+ 1063  terragrunt state list 
+ 1064  terragrunt state refresh
+ 1065  terragrunt apply --auto-approve
+ 1066  terragrunt plan
+ 1067  terragrunt apply --auto-approve
+ 1068  ls
+ 1069  git status
+ 1070  cd ..
+ 1071  ls
+ 1072  terragrunt run-all destroy --terragrunt-exclude-dir 01-bootstrap/ --terragrunt-dry-run
+ 1073  terragrunt run-all destroy --terragrunt-exclude-dir "01-bootstrap" --terragrunt-dry-run
+ 1074  terragrunt run-all destroy --terragrunt-exclude-dir 01-bootstrap 
+ 1075  terragrunt run-all destroy --terragrunt-exclude-dir "01-bootstrap"
+ 1076  ls
+ 1077  cd apps/frontend-web/
+ 1078  ls
+ 1079  terragrunt destroy  --auto-approve 
+ 1080  cd ../../04-gke/
+ 1081  ls
+ 1082  terragrunt destroy  --auto-approve 
+ 1083  cd ..
+ 1084  ls
+ 1085  02-vpc/
+ 1086  cd 02-vpc/
+ 1087  ls
+ 1088  terragrunt destroy  --auto-approve 
+ 1089  cd ..
+ 1090  ls
+ 1091  cd 01-bootstrap/
+ 1092  ls
+ 1093  terragrunt destroy  --auto-approve 
+ 1094  ls
+ 1095  cd ..
+ 1096  ls
+ 1097  # This deletes all cached configurations for this client
+ 1098  find . -type d -name ".terragrunt-cache" -exec rm -rf {} +
+ 1099  ls
+ 1100  cd 01-bootstrap/
+ 1101  ls
+ 1102  # This instructs Terragrunt to create the GCS state bucket automatically 
+ 1103  # if it doesn't exist, before it tries to initialize the remote state.
+ 1104  terragrunt init --backend-bootstrap
+ 1105  terragrunt plan
+ 1106  rm -rf .terragrunt-cache
+ 1107  terragrunt init --backend-bootstrap
+ 1108  terragrunt plan 
+ 1109  rm -rf .terragrunt-cache
+ 1110  terragrunt init --backend-bootstrap
+ 1111  terragrunt plan 
+ 1112  terragrunt apply --auto-approve 
+ 1113  terragrunt destroy --auto-approve 
+ 1114  terragrunt apply --auto-approve 
+ 1115  terragrunt destroy --auto-approve 
+ 1116  terragrunt apply --auto-approve 
+ 1117  cd ..
+ 1118  find . -type d -name ".terragrunt-cache" -exec rm -rf {} +
+ 1119  ls
+ 1120  include "root" {
+ 1121  terragrunt run-all plan
+ 1122  terragrunt run --all plan
+ 1123  clear
+ 1124  terragrunt run --all plan
+ 1125  clear
+ 1126  terragrunt run --all plan
+ 1127  rm -rf .terragrunt-cache
+ 1128  clear
+ 1129  terragrunt run --all plan
+ 1130  clear
+ 1131  terragrunt run --all plan
+ 1132  clear
+ 1133  terragrunt run --all plan
+ 1134  rm -rf .terragrunt-cache
+ 1135  terragrunt run --all plan
+ 1136  clear
+ 1137  terragrunt run --all plan
+ 1138  clear
+ 1139  terragrunt run --all plan
+ 1140  rm -rf .terragrunt-cache
+ 1141  terragrunt run --all plan
+ 1142  ls
+ 1143  cd 02-vpc/
+ 1144  ls
+ 1145  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1146  terragrunt init
+ 1147  terragrunt plan
+ 1148  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1149  terragrunt init
+ 1150  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1151  terragrunt init
+ 1152  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1153  terragrunt init
+ 1154  rm -rf .terragrunt-cache
+ 1155  terragrunt init
+ 1156  rm -rf .terragrunt-cache
+ 1157  terragrunt init
+ 1158  rm -rf .terragrunt-cache
+ 1159  terragrunt init
+ 1160  rm -rf .terragrunt-cache
+ 1161  terragrunt init
+ 1162  rm -rf .terragrunt-cache
+ 1163  terragrunt init
+ 1164  terragrunt plan 
+ 1165  rm -rf .terragrunt-cache
+ 1166  terragrunt init
+ 1167  terragrunt plan 
+ 1168  terragrunt init
+ 1169  terragrunt plan 
+ 1170  rm -rf .terragrunt-cache
+ 1171  terragrunt init
+ 1172  terragrunt plan 
+ 1173  rm -rf .terragrunt-cache
+ 1174  terragrunt init
+ 1175  terragrunt plan 
+ 1176  terragrunt apply --auto-approve
+ 1177  terragrunt state list 
+ 1178  cd ..
+ 1179  ls
+ 1180  # Clean cache in all subdirectories recursively
+ 1181  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1182  terragrunt run --all plan
+ 1183  cd 03-bastion/
+ 1184  ls
+ 1185  cd ..
+ 1186  ls
+ 1187  cd 04-gke/
+ 1188  rm -rf .terragrunt-cache
+ 1189  terragrunt init
+ 1190  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1191  terragrunt init
+ 1192  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1193  terragrunt init
+ 1194  terragrunt plan 
+ 1195  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1196  terragrunt plan 
+ 1197  terragrunt apply --auto-approve 
+ 1198  ls
+ 1199  cd ..
+ 1200  ls
+ 1201  terragrunt run-all plan
+ 1202  terragrunt run --all plan
+ 1203  cd 05-monitoring/
+ 1204  ls
+ 1205  cd ..
+ 1206  clear
+ 1207  terragrunt run --all plan
+ 1208  ls
+ 1209  cd 03-bastion/
+ 1210  ls
+ 1211  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1212  terragrunt init
+ 1213  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1214  terragrunt init
+ 1215  rm -rf .terragrunt-cache
+ 1216  terragrunt init
+ 1217  cd ..
+ 1218  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1219  terragrunt run --all plan
+ 1220  cd 02-vpc/
+ 1221  terragrunt plan 
+ 1222  terragrunt init
+ 1223  terragrunt plan 
+ 1224  cd ..
+ 1225  ls
+ 1226  cd 03-bastion/
+ 1227  ls
+ 1228  terragrunt init
+ 1229  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1230  terragrunt init
+ 1231  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1232  terragrunt init
+ 1233  rm -rf .terragrunt-cache
+ 1234  rm -rf .terraform*
+ 1235  terragrunt init
+ 1236  rm -rf .terragrunt-cache
+ 1237  rm -rf .terraform*
+ 1238  terragrunt init
+ 1239  cd ../02-vpc
+ 1240  terragrunt output
+ 1241  terragrunt state list 
+ 1242  terragrunt state refresh
+ 1243  terragrunt state pull
+ 1244  terragrunt output
+ 1245  terragrunt plan 
+ 1246  terragrunt apply --auto-approve 
+ 1247  cd ..
+ 1248  cd 03-bastion/
+ 1249  ls
+ 1250  rm -rf .terragrunt-cache
+ 1251  rm -rf .terraform*
+ 1252  terragrunt init
+ 1253  terragrunt plan 
+ 1254  terragrunt apply --auto-approve 
+ 1255  cd ..
+ 1256  ls
+ 1257  cd 01-bootstrap/
+ 1258  terragrunt init
+ 1259  terragrunt plan 
+ 1260  terragrunt apply --auto-approve 
+ 1261  cd ..
+ 1262  ls
+ 1263  cd 03-bastion/
+ 1264  terragrunt plan 
+ 1265  terragrunt apply --auto-approve 
+ 1266  cd ..
+ 1267  terragrunt plan 
+ 1268  terragrunt apply --auto-approve 
+ 1269  ls
+ 1270  cd ..
+ 1271  ls
+ 1272  cd 03-bastion/
+ 1273  ls
+ 1274  terragrunt init
+ 1275  terragrunt plan --auto-approve 
+ 1276  terragrunt plan 
+ 1277  terragrunt apply --auto-approve 
+ 1278  gcloud services enable iap.googleapis.com --project=eks-terraform
+ 1279  terragrunt apply --auto-approve 
+ 1280  gcloud compute ssh client-a-dev-bastion     --zone=asia-south1-a     --project=eks-terraform     --tunnel-through-iap
+ 1281  cd ..
+ 1282  ls
+ 1283  terragrunt run --all plan
+ 1284  cd 05-monitoring/
+ 1285  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1286  terragrunt init
+ 1287  terragrunt plan
+ 1288  terragrunt apply --auto-approve 
+ 1289  ls
+ 1290  cd ..
+ 1291  ls
+ 1292  cd storage-class/
+ 1293  ls
+ 1294  terragrunt init
+ 1295  terragrunt plan 
+ 1296  terragrunt apply --auto-approve 
+ 1297  cd ..
+ 1298  ls
+ 1299  cd app
+ 1300  cd apps/
+ 1301  ls
+ 1302  cd frontend-web/
+ 1303  ls
+ 1304  terragrunt init
+ 1305  terragrunt apply --auto-approve 
+ 1306  cd ..
+ 1307  ls
+ 1308  cd ..
+ 1309  ls
+ 1310  cd iam-secrets/
+ 1311  ls
+ 1312  terragrunt apply --auto-approve 
+ 1313  cd ..
+ 1314  ls
+ 1315  cd apps/
+ 1316  terragrunt state list 
+ 1317  terragrunt init 
+ 1318  terragrunt state list 
+ 1319  cd ..
+ 1320  ls
+ 1321  ls
+ 1322  cd frontend-web/
+ 1323  ls
+ 1324  terragrunt state list 
+ 1325  terragrunt plan 
+ 1326  terragrunt apply --auto-approve 
+ 1327  terragrunt state --help
+ 1328  terragrunt state pull
+ 1329  terragrunt state --help
+ 1330  terragrunt refresh
+ 1331  terragrunt plan 
+ 1332  terragrunt destroy --auto-approve 
+ 1333  terragrunt plan 
+ 1334  terragrunt apply --auto-approve 
+ 1335  cd ..
+ 1336  terragrunt run --all plan
+ 1337  cd ..
+ 1338  terragrunt run --all plan
+ 1339  terragrunt run --all plan --queue-exclude-dir "01-bootstrap"
+ 1340  terragrunt run --all  --queue-exclude-dir "01-bootstrap" destroy
+ 1341  cd /home/vedant-bari/workspace/nuclesteq/cloud-platform-blueprint-kubernetes/gcp-gke
+ 1342  clear
+ 1343  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w 
+ 1344  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1345  kubectl get nodes 
+ 1346  gcloud container clusters get-credentials gke-client-a-dev --zone=asia-south1-a --project=eks-terraform
+ 1347  kubectl get nodes 
+ 1348  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1349  ls
+ 1350  cd cd gcp-gke/03-live/clients/client-a/dev
+ 1351  cd gcp-gke/03-live/clients/client-a/dev
+ 1352  cd ..
+ 1353  cd gcp-gke/03-live/clients/client-a/dev
+ 1354  ls
+ 1355  cd storage-class/
+ 1356  ls
+ 1357  terragrunt apply --auto-approve
+ 1358  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1359  clear
+ 1360  cd ~/workspace/nuclesteq/cloud-platform-blueprint-kubernetes/gcp-gke/
+ 1361  ls
+ 1362  kubectl get pods -n dev-frontend 
+ 1363  kubectl get ing -n dev-frontend 
+ 1364  kubectl logs -f deploy/frontend-web-generic-app -n dev-frontend 
+ 1365  kubectl exec -it frontend-web-generic-app-588b9d9d45-2bzld -n dev-frontend -- bash 
+ 1366  kubectl exec -it frontend-web-generic-app-588b9d9d45-2bzld -n dev-frontend -- sh
+ 1367  kubectl logs -f deploy/frontend-web-generic-app -n dev-frontend 
+ 1368  kubectl exec -it frontend-web-generic-app-588b9d9d45-2bzld -n dev-frontend -- sh
+ 1369  gcloud secrets list --project=eks-terraform
+ 1370  gcloud services enable secretmanager.googleapis.com --project=eks-terraform
+ 1371  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1372  kubectl delete ns  dev-frontend 
+ 1373  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1374  gcloud secrets list --project=eks-terraform
+ 1375  Vaishnavi Tech Park, South Tower, 3rd FloorSarjapur Main Road, Bellandur, Bengaluru – 560103KarnatakaContact Us© 2016-2026 Groww. All rights reserved.Version: 7.9.3Share MarketIndicesF&OMutual FundsETFsFunds By GrowwCalculatorsIPOMiscellaneousShow More
+ 1376  NSEBSEMCXTerms and ConditionsPolicies and ProceduresRegulatory & Other InfoPrivacy PolicyDisclosureSMART ODRDownload FormsInformation Security PracticesInvestor Charter and GrievanceBug BountyGroww Pay - Terms of useGroww Pay - Privacy policy
+ 1377  Mutual Funds:Stocks:
+ 1378  Cart
+ 1379  shrutikabari74@gmail.com
+ 1380  ₹0.00Stocks, F&O balance
+ 1381  clear
+ 1382  gcloud secrets list --project=eks-terraform
+ 1383  kubectl get pods -n kube-system 
+ 1384  kubectl get cluster 
+ 1385  kubectl cluster-info 
+ 1386  gcloud container clusters describe <YOUR_CLUSTER_NAME>     --region <YOUR_REGION> \
+ 1387  gcloud secrets list --project=eks-terraform
+ 1388  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1389  gcloud secrets list --project=eks-terraform
+ 1390  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1391  gcloud secrets list --project=eks-terraform
+ 1392  kubectl get events --sort-by='.lastTimestamp' -n dev-frontend -w  
+ 1393  kubectl logs -f deploy/frontend-web-generic-app -n dev-frontend 
+ 1394  kubectl exec -it frontend-web-generic-app-588b9d9d45-2bzld -n dev-frontend -- sh
+ 1395  kubectl exec -it  -n dev-frontend frontend-web-generic-app-588b9d9d45-gl7v7 -- sh
+ 1396  kubectl exec -it deploy/frontend-web-generic-app -n dev-frontend -- sh -c '
+ 1397    echo "========================================="
+ 1398    echo "    SECRET STORE CSI DRIVER VALIDATION   "
+ 1399    echo "========================================="
+ 1400    
+ 1401    SECRET_DIR="/mnt/secrets"
+ 1402    TARGET_SECRET="NEW_FEATURE_TOKEN"
+ 1403    if [ -d "$SECRET_DIR" ]; then
+ 1404      echo "[INFO] Secret directory found at $SECRET_DIR"
+ 1405      echo ""
+ 1406      echo "Files currently mounted:"
+ 1407      ls -la "$SECRET_DIR"
+ 1408      echo ""
+ 1409      
+ 1410      if [ -f "$SECRET_DIR/$TARGET_SECRET" ]; then
+ 1411        echo "[SUCCESS] Found target secret file: $TARGET_SECRET"
+ 1412        echo -n "[CONTENT] Value inside secret: "
+ 1413        cat "$SECRET_DIR/$TARGET_SECRET"
+ 1414        echo ""
+ 1415      else
+ 1416        echo "[ERROR] Target secret file '$TARGET_SECRET' NOT found in $SECRET_DIR"
+ 1417      fi
+ 1418    else
+ 1419      echo "[ERROR] Secret directory $SECRET_DIR does not exist or mount is empty!"
+ 1420    fi
+ 1421    echo "========================================="
+ 1422  '
+ 1423  gcloud secrets list --project=eks-terraform
+ 1424  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1425  gcloud secrets list --project=eks-terraform
+ 1426  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1427  kubectl get csidrivers
+ 1428  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1429  kubectl get pods -n kube-system -l app=secrets-store-csi-driver -o wide
+ 1430  kubectl get csidrivers
+ 1431  kubectl get pods -n kube-system -l app=secrets-store-csi-driver -o wide
+ 1432  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1433  kubectl get pods -n frontend-web 
+ 1434  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1435  kubectl get pvc 
+ 1436  kubectl get pvc -n frontend-web 
+ 1437  kubectl delete ns  frontend-web 
+ 1438  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1439  kubectl get csidriver
+ 1440  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1441  kubectl logs -f deploy/frontend-web-generic-app -n dev-frontend 
+ 1442  kubectl get pods -n frontend-web 
+ 1443  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1444  kubectl get secretproviderclass -A
+ 1445  kubectl get deployments.apps -n frontend-web -o yaml 
+ 1446  kubectl get secretproviderclass -A
+ 1447  kubectl edit deployments.apps -n frontend-web frontend-web-generic-app 
+ 1448  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1449  kubectl exec -it deploy/frontend-web-generic-app -n dev-frontend -- sh
+ 1450  kubectl get pods -n frontend-web 
+ 1451  kubectl exec -it frontend-web-generic-app-644c9c597f-4mfrx -n frontend-web -- bash 
+ 1452  kubectl exec -it frontend-web-generic-app-644c9c597f-4mfrx -n frontend-web -- sh
+ 1453  git status
+ 1454  git add .
+ 1455  git branch 
+ 1456  git push 
+ 1457  git push --set-upstream origin feature.vb.gcp-gke
+ 1458  kubectl get secretproviderclass -A
+ 1459  gcloud secrets list --project=eks-terraform
+ 1460  ls
+ 1461  cd 03-live/
+ 1462  ls
+ 1463  cd clients/
+ 1464  ls
+ 1465  cd client-a/
+ 1466  ls
+ 1467  cd dev/
+ 1468  ls
+ 1469  cd iam-secrets/
+ 1470  terragrunt destroy  --auto-approve 
+ 1471  ls
+ 1472  cd ..
+ 1473  ls
+ 1474  cd storage-class/
+ 1475  ls
+ 1476  terragrunt destroy  --auto-approve 
+ 1477  cd ..
+ 1478  ls
+ 1479  cd 02-vpc/
+ 1480  ls
+ 1481  terragrunt destroy  --auto-approve 
+ 1482  cd ..
+ 1483  ls
+ 1484  cd ..
+ 1485  ls
+ 1486  cd 01-bootstrap/
+ 1487  ls
+ 1488  cd clients/
+ 1489  ls
+ 1490  cd client-a/
+ 1491  ls
+ 1492  cd dev/
+ 1493  ls
+ 1494  terragrunt destroy  --auto-approve 
+ 1495  terragrunt apply  --auto-approve 
+ 1496  terragrunt destroy  --auto-approve 
+ 1497  terragrunt destroy  --auto-approve --backend-bootstrap
+ 1498  terragrunt init
+ 1499  rm -rf .terragrunt-cache
+ 1500  terragrunt init
+ 1501  terragrunt init --backend-bootstrap
+ 1502  terragrunt init
+ 1503  terragrunt destroy  --auto-approve 
+ 1504  terragrunt destroy --backend-bootstrap --auto-approve
+ 1505  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1506  terragrunt plan 
+ 1507  terragrunt plan --backend-bootstrap
+ 1508  terragrunt init --backend-bootstrap
+ 1509  terragrunt plan
+ 1510  terragrunt init --backend-bootstrap
+ 1511  terragrunt plan
+ 1512  terragrunt render
+ 1513  grep -R "bucket" terragrunt.hcl
+ 1514  grep -R "remote_state\|bucket" ../../../../
+ 1515  clear
+ 1516  gcloud storage buckets list
+ 1517  grep -R "bucket" . --include="*.hcl" --include="*.tf"
+ 1518  gcloud storage buckets list
+ 1519  terragrunt render
+ 1520  terragrunt init --backend-bootstrap
+ 1521  terragrunt plan
+ 1522  terragrunt p --backend-bootstrap
+ 1523  terragrunt apply --backend-bootstrap --auto-approve
+ 1524  terragrunt init --backend-bootstrap
+ 1525  terragrunt plan
+ 1526  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1527  terragrunt plan --backend-bootstrap
+ 1528  rm -rf .terragrunt-cache
+ 1529  terragrunt init --backend-bootstrap
+ 1530  rm -rf .terragrunt-cache
+ 1531  terragrunt init --backend-bootstrap
+ 1532  rm -rf .terragrunt-cache
+ 1533  terragrunt init --backend-bootstrap
+ 1534  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1535  terragrunt init --backend-bootstrap
+ 1536  rm -rf .terragrunt-cache .terraform .terraform.lock.hcl
+ 1537  terragrunt init --backend-bootstrap
+ 1538  terragrunt plan --backend-bootstrap
+ 1539  terragrunt apply --auto-approve --backend-bootstrap
+ 1540  ls
+ 1541  terragrunt plan 
+ 1542  terragrunt init
+ 1543  terragrunt plan 
+ 1544  terragrunt apply --auto-approve 
+ 1545  ls
+ 1546  cd ..
+ 1547  ls
+ 1548  gcloud config set project eks-terraform
+ 1549  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1-a --project eks-terraform
+ 1550  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1 --project eks-terraform
+ 1551  kubectl get nodes 
+ 1552  kubectl get pods -n kube-system 
+ 1553  ls
+ 1554  cd dev/
+ 1555  ls
+ 1556  terragrunt plan 
+ 1557  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1558  kubectl get pods -n monitoring 
+ 1559  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1560  ls
+ 1561  kubectl get sc
+ 1562  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1563  ls
+ 1564  cd ../../../../
+ 1565  ls
+ 1566  cd 03-live/
+ 1567  ls
+ 1568  cd clients/
+ 1569  ls
+ 1570  cd client-a/
+ 1571  ls
+ 1572  cd dev/
+ 1573  ls
+ 1574  tree .
+ 1575  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1576  gcloud iam service-accounts list --project=eks-terraform
+ 1577  kubectl describe sa frontend-web-generic-app -n frontend-web
+ 1578  ls
+ 1579  cd 05-monitoring/
+ 1580  ls
+ 1581  terragrunt destroy --auto-approve
+ 1582  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1583  gcloud iam service-accounts list --project=eks-terraform
+ 1584  kubectl describe sa frontend-web-generic-app -n frontend-web
+ 1585  gcloud iam service-accounts get-iam-policy your-gsa-name@eks-terraform.iam.gserviceaccount.com
+ 1586  kubectl describe sa frontend-web-generic-app -n frontend-web
+ 1587  gcloud iam service-accounts list --project=eks-terraform
+ 1588  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1589  ls
+ 1590  cd ..
+ 1591  ls
+ 1592  mv iam-secrets/ 06-iam-secrets/
+ 1593  ls
+ 1594  mv storage-class/ 07-storage-class
+ 1595  ls
+ 1596  mv 07-storage-class storage-class
+ 1597  mv 06-iam-secrets/ iam-secrets
+ 1598  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1599  kubectl get all -n frontend-web frontend-web-generic-app
+ 1600  kubectl get all -n frontend-web 
+ 1601  kubectl get pvc -n frontend-web 
+ 1602  kubectl delete ns  frontend-web 
+ 1603  kubectl get events --sort-by='.lastTimestamp' -n frontend-web-testing -w  
+ 1604  kubectl get all -n frontend-web-testing 
+ 1605  kubectl get pods -n frontend-web-testing 
+ 1606  kubectl get events --sort-by='.lastTimestamp' -n frontend-web-testing -w  
+ 1607  kubectl get sa -n frontend-web-testing 
+ 1608  kubectl get sa -n frontend-web-testing frontend-web-sa -o yaml 
+ 1609  gcloud services enable iamcredentials.googleapis.com --project=eks-terraform
+ 1610  kubectl get events --sort-by='.lastTimestamp' -n frontend-web-testing -w  
+ 1611  kubectl get pods -n frontend-web-testing 
+ 1612  kubectl get events --sort-by='.lastTimestamp' -n frontend-web-testing -w  
+ 1613  kubectl delete pod -l app=frontend-web-testing-generic-app -n frontend-web-testing
+ 1614  kubectl get pods -n frontend-web-testing 
+ 1615  kubectl delete pod -n frontend-web-testing frontend-web-testing-generic-app-86798c686f-c2gc8 frontend-web-testing-generic-app-86798c686f-zkh4s 
+ 1616  kubectl get events --sort-by='.lastTimestamp' -n frontend-web-testing -w  
+ 1617  kubectl get secretproviderclass   frontend-web-testing-generic-app-secretproviderclass   -n frontend-web-testing -o yaml
+ 1618  kubectl delete ns  frontend-web-testing 
+ 1619  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1620  code .
+ 1621  cd ~/workspace/nuclesteq/cloud-platform-blueprint-kubernetes/
+ 1622  ls
+ 1623  code .
+ 1624  ls
+ 1625  cat app.py 
+ 1626  vim docker-compose.yaml 
+ 1627  vim Dockerfile 
+ 1628  vim docker-compose.yaml 
+ 1629  docker-compose up 
+ 1630  ls
+ 1631  docker ps
+ 1632  docker run -rm  --image  node:alphine --it 
+ 1633  docker run --rm  --image  node:alphine --it 
+ 1634  docker run -
+ 1635  docker run  --image  node:alphine --it 
+ 1636  docker run --help 
+ 1637  docker container --help 
+ 1638  docker container run --image node:alphine -it -- bash
+ 1639  docker container run --image node:alphine node 
+ 1640  docker container run -image node:alphine no
+ 1641  ocker run -it --rm node:alpine sh
+ 1642  docker run -it --rm node:alpine sh
+ 1643  docker ps
+ 1644  docker run -it  testuser40/sample-flask-app:1.0.0 
+ 1645  docker run -it  flaskccid.azurecr.io/vedantbaricicd
+ 1646  clear
+ 1647  cd /home/vedant-bari/workspace/jenkins/flask-ci-cd
+ 1648  ls
+ 1649  docker-compose build 
+ 1650  docker tag  flask-ci-cd_web testuser40/sample-flask-app
+ 1651  docker tag  flask-ci-cd_web testuser40/sample-flask-app:latest
+ 1652  docker push testuser40/sample-flask-app:latest
+ 1653  cd workspace/nuclesteq/cloud-platform-blueprint-kubernetes/
+ 1654  code .
+ 1655  cd /home/vedant-bari/workspace/nuclesteq/cloud-platform-blueprint-kubernetes/gcp-gke
+ 1656  ls
+ 1657  cd 03-live/
+ 1658  ls
+ 1659  cd clients/
+ 1660  ls
+ 1661  cd client-a/
+ 1662  ls
+ 1663  cd dev/
+ 1664  ls
+ 1665  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1666  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1667  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1668  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1669  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1670  find . -name ".terragrunt-cache" -type d -exec rm -rf {} +
+ 1671  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1672  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply --auto-approve
+ 1673  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply 
+ 1674  kubectl get nodes
+ 1675  kubectl get svc -n monitoring 
+ 1676  kubectl edit deployments.apps -n monitoring kube-prometheus-stack-grafana 
+ 1677  kubectl edit svc -n monitoring kube-prometheus-stack-grafana 
+ 1678  kubectl get svc -n monitoring 
+ 1679  kubectl get nodes
+ 1680  kubectl get nodes -o wide 
+ 1681  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1682  kubectl logs -f deploy/frontend-web-generic-app -n dev-frontend 
+ 1683  kubectl logs -f deploy/frontend-web-generic-app -n frontend-web 
+ 1684  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1685  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply
+ 1686  terragrunt run --all  --queue-exclude-dir "01-bootstrap" --queue-exclude-dir "apps/frontend-web/" plan 
+ 1687  terragrunt run --all  --queue-exclude-dir "01-bootstrap" --queue-exclude-dir "apps/frontend-web/" apply
+ 1688  ls
+ 1689  cd 05-monitoring/
+ 1690  ls
+ 1691  terragrunt plan 
+ 1692  terragrunt apply --auto-approve 
+ 1693  terragrunt destroy --auto-approve 
+ 1694  terragrunt apply --auto-approve 
+ 1695  terragrunt destroy --auto-approve 
+ 1696  cd ..
+ 1697  ls
+ 1698  terragrunt run --all  --queue-exclude-dir "01-bootstrap" --queue-exclude-dir "apps/frontend-web/" apply
+ 1699  terragrunt run --all  --queue-exclude-dir "01-bootstrap" destroy
+ 1700  terragrunt run --all  --queue-exclude-dir "01-bootstrap" destroy 
+ 1701  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply 
+ 1702  ls
+ 1703  terragrunt run --all  --queue-exclude-dir "01-bootstrap" destroy 
+ 1704  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1705  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply 
+ 1706  terragrunt run --all  --queue-exclude-dir "01-bootstrap" plan 
+ 1707  terragrunt run --all  --queue-exclude-dir "01-bootstrap" apply
+ 1708  ls
+ 1709  cd apps/backend-web/
+ 1710  ls
+ 1711  terragrunt init
+ 1712  terragrunt plan 
+ 1713  kubectl delete ns  frontend-web
+ 1714  kubectl delete ns  backend-web 
+ 1715  ls
+ 1716  terragrunt init
+ 1717  terragrunt plan 
+ 1718  ls
+ 1719  terragrunt init
+ 1720  terragrunt plan 
+ 1721  terragrunt apply --auto-approve 
+ 1722  kubectl delete ns  backend-web 
+ 1723  terragrunt plan 
+ 1724  terragrunt apply --auto-approve 
+ 1725  kubectl delete ns  backend-web 
+ 1726  terragrunt plan 
+ 1727  terragrunt apply --auto-approve 
+ 1728  kubectl delete ns  backend-web 
+ 1729  terragrunt plan 
+ 1730  terragrunt apply --auto-approve 
+ 1731  terragrunt destroy --auto-approve 
+ 1732  terragrunt plan 
+ 1733  terragrunt apply --auto-approve 
+ 1734  terragrunt plan 
+ 1735  terragrunt apply --auto-approve 
+ 1736  terragrunt destroy --auto-approve 
+ 1737  terragrunt apply --auto-approve 
+ 1738  terragrunt plan 
+ 1739  terragrunt apply --auto-approve 
+ 1740  terragrunt plan 
+ 1741  terragrunt apply --auto-approve 
+ 1742  cd ..
+ 1743  ls
+ 1744  cd frontend-web/
+ 1745  ls
+ 1746  terragrunt plan 
+ 1747  terragrunt apply --auto-approve 
+ 1748  terragrunt destroy --auto-approve 
+ 1749  terragrunt plan 
+ 1750  terragrunt apply --auto-approve 
+ 1751  terragrunt destroy --auto-approve 
+ 1752  terragrunt plan 
+ 1753  terragrunt apply --auto-approve 
+ 1754  kubectl get ing -n frontend-web 
+ 1755  kubectl get ing -n backend-web 
+ 1756  kubectl edit ing -n backend-web backend-web-generic-app 
+ 1757  kubectl get ing -n backend-web 
+ 1758  kubectl get ing -n frontend-web frontend-web-generic-app 
+ 1759  cd ..
+ 1760  ls
+ 1761  git status
+ 1762  cd ../../../../
+ 1763  ls
+ 1764  cd ..
+ 1765  ls
+ 1766  tree .
+ 1767  chmod +x scripts/create_client.sh
+ 1768  ./scripts/create_client.sh client-b dev eks-terraform
+ 1769  ls
+ 1770  mkdir -p 12-platform-config/clients/client-b/infra
+ 1771  git status
+ 1772  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1773  ls
+ 1774  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1775  ls
+ 1776  cd 03-live/
+ 1777  ls
+ 1778  cd clients/
+ 1779  ls
+ 1780  cd client-a/
+ 1781  terragrunt run --all  --queue-exclude-dir "01-bootstrap" destroy
+ 1782  cd /home/vedant-bari/workspace/nuclesteq/cloud-platform-blueprint-kubernetes/gcp-gke
+ 1783  ls
+ 1784  clear
+ 1785  ls
+ 1786  cd 03-live/
+ 1787  ls
+ 1788  cd clients/
+ 1789  ls
+ 1790  cd client-a/
+ 1791  ls
+ 1792  cd dev/
+ 1793  ls
+ 1794  clear
+ 1795  ls
+ 1796  mv storage-class/ 07-storage-class
+ 1797  mv iam-secrets/ 06-iam-secrets/
+ 1798  ls
+ 1799  mv 07-storage-class/ 07-storage-class/
+ 1800  ls
+ 1801  history
+ 1802  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1-a --project eks-terraform
+ 1803  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1 --project eks-terraform
+ 1804  kubectl get pods -n frontend-web frontend-web-generic-app-644c9c597f-
+ 1805  kubectl get pods -n frontend-web 
+ 1806  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1807  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1808  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1809  kubectl get pods -n monitoring 
+ 1810  kubectl logs -f kube-prometheus-stack-grafana-5d974db568-dgm86 --tail=30
+ 1811  kubectl logs -f kube-prometheus-stack-grafana-5d974db568-dgm86 --tail=30 -n monitoring 
+ 1812  kubectl get pods -n monitoring 
+ 1813  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1814  kubectl get pods -n monitoring 
+ 1815  kubectl logs -f kube-prometheus-stack-grafana-5d974db568-dgm86 --tail=30 -n monitoring 
+ 1816  kubectl get pods -n monitoring 
+ 1817  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1818  kubectl get pods -n monitoring 
+ 1819  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1820  kubectl get nodes 
+ 1821  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1822  ls
+ 1823  terragrunt run --all --filter "apps" destroy
+ 1824  terragrunt run --all --filter "apps/frontend-web/" destroy
+ 1825  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1826  terragrunt run --all --filter "05-monitoring" destroy
+ 1827  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1828  terragrunt run --all --filter "05-monitoring" destroy
+ 1829  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1830  kubectl get pods -n monitoring 
+ 1831  kubectl get pvc -n monitoring 
+ 1832  kubectl get pv 
+ 1833  kubectl get pv
+ 1834  kubectl get pv 
+ 1835  kubectl get pvc
+ 1836  kubectl get pvc -n monitoring 
+ 1837  terragrunt run --all --filter "05-monitoring" destroy
+ 1838  kubectl get ns 
+ 1839  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1840  kubectl get pv
+ 1841  kubectl get pvc
+ 1842  kubectl get pvc -n monitoring 
+ 1843  kubectl get persistentvolume
+ 1844  kubectl get sc 
+ 1845  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1846  kubectl get pods -n monitoring 
+ 1847  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1848  kubectl get pods -n monitoring 
+ 1849  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1850  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1851  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1852  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1853  kubectl get pv 
+ 1854  kubectl get pvc -n monitoring 
+ 1855  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1856  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1857  kubectl get events --sort-by='.lastTimestamp' -n monitoring -w  
+ 1858  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1859  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1860  kubectl get events --sort-by='.lastTimestamp' -n monitoring 
+ 1861  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1 --project eks-terraform
+ 1862  kubectl get events --sort-by='.lastTimestamp' -n monitoring 
+ 1863  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1864  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1865  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1866  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1867  kubectl get events --sort-by='.lastTimestamp' -n backend-web 
+ 1868  gcloud container clusters get-credentials gke-client-a-dev --zone asia-south1 --project eks-terraform
+ 1869  kubectl get events --sort-by='.lastTimestamp' -n backend-web 
+ 1870  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w
+ 1871  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1872  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w
+ 1873  kubectl get events --sort-by='.lastTimestamp' -n backend-web 
+ 1874  kubectl delete ns  frontend-web
+ 1875  kubectl get events --sort-by='.lastTimestamp' -n backend-web 
+ 1876  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w 
+ 1877  kubectl exec -it -n backend-web backend-web-generic-app-7444b94c5f-dhwwb -- sh
+ 1878  kubectl exec -it -n backend-web backend-web-generic-app-7444b94c5f-dhwwb -- bash
+ 1879  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1880  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w
+ 1881  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1882  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w
+ 1883  kubectl get pods -n backend-web 
+ 1884  kubectl logs -f deploy/backend-web-generic-app -n dev-frontend 
+ 1885  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1886  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w
+ 1887  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1888  kubectl get pvc -n backend-web 
+ 1889  kubectl get pv 
+ 1890  kubectl get pv -w
+ 1891  kubectl get pv 
+ 1892  kubectl get pvc -n backend-web 
+ 1893  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1894  kubectl get pods -n backend-web 
+ 1895  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1896  kubectl get pods -n backend-web 
+ 1897  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1898  kubectl get pods -n backend-web 
+ 1899  kubectl logs -f backend-web-generic-app-8987644cd-wmlpl -n backend-web 
+ 1900  kubectl describe pod  backend-web-generic-app-8987644cd-wmlpl -n backend-web 
+ 1901  ls
+ 1902  cd apps/frontend-web/
+ 1903  ls
+ 1904  terragrunt apply --auto-approve 
+ 1905  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1906  clear
+ 1907  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1908  kubectl get ing -n backend-web 
+ 1909  kubectl logs -f backend-web-generic-app-8987644cd-wmlpl -n backend-web 
+ 1910  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1911  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1912  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1913  kubectl get ns 
+ 1914  kubectl delete ns backend-web 
+ 1915  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1916  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1917  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1918  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1919  kubectl delete ns backend-web 
+ 1920  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1921  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1922  kubectl edit -n backend-web deployments.apps backend-web-generic-app 
+ 1923  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1924  kubectl get pods -n backend-web 
+ 1925  clear
+ 1926  kubectl get ingress -n backend-web 
+ 1927  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1928  kubectl edit ingress -n backend-web  backend-web-generic-app 
+ 1929  kubectl get svc -n backend-web 
+ 1930  kubectl edit ingress -n backend-web  backend-web-generic-app 
+ 1931  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1932  kubectl get ingress -n backend-web 
+ 1933  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1934  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1935  kubectl get svc -n backend-web 
+ 1936  kubectl get nodes 
+ 1937  kubectl get nodes -o yaml 
+ 1938  kubectl get nodes -o wide 
+ 1939  kubectl get svc -n backend-web 
+ 1940  kubectl logs -f deploy/backend-web-generic-app -n backend-web 
+ 1941  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1942  kubectl delete ns backend-web 
+ 1943  kubectl get pods -n backend-web 
+ 1944  kubectl exec -it backend-web-generic-app-8d9885fcd-kltt5 -n backend-web  -- bash 
+ 1945  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1946  kubectl get pods -n backend-web 
+ 1947  kubectl get events --sort-by='.lastTimestamp' -n backend-web -w  
+ 1948  kubectl get sa
+ 1949  kubectl get sa -n backend-web 
+ 1950  gcloud iam service-accounts list --project=eks-terraform
+ 1951  gcloud iam service-accounts delete frontend-web-gsa@eks-terraform.iam.gserviceaccount.com --project=eks-terraform
+ 1952  kubectl get pods -n backend-web 
+ 1953  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1954  gcloud iam service-accounts delete frontend-web-gsa@eks-terraform.iam.gserviceaccount.com --project=eks-terraform
+ 1955  gcloud iam service-accounts list --project=eks-terraform
+ 1956  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1957  kubectl get ing -n backend-web 
+ 1958  kubectl get events --sort-by='.lastTimestamp' -n frontend-web -w  
+ 1959  kubectl get secret --namespace monitoring kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+ 1960  kubectl port-forward svc/kube-prometheus-stack-grafana 3000:80 -n monitoring
+ 1961  cd ..
+ 1962  ls
+ 1963  cd client-b/
+ 1964  ls
+ 1965  cd prod/
+ 1966  ls
+ 1967  find . -name "terraform.tfstate"
+ 1968  exit
+ 1969  cd ..
+ 1970  clear
+ 1971  ./create-bootstrap-bucket.sh eks-terraform prod-gcp-tf-state-client-b-prod asia-south1
+ 1972  ls
+ 1973  cd ../../../../../
+ 1974  ls
+ 1975  cd gcp-gke/scripts/
+ 1976  ls
+ 1977  ./create-bootstrap-bucket.sh eks-terraform prod-gcp-tf-state-client-b-prod asia-south1
+ 1978  chmod +x scripts/create_client.sh
+ 1979  chmod +x create-bootstrap-bucket.sh 
+ 1980  ./create-bootstrap-bucket.sh eks-terraform prod-gcp-tf-state-client-b-prod asia-south1
+ 1981  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1982  ls
+ 1983  python3 scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1984  vim 12-platform-config/clients/client-b/infra/prod.yaml
+ 1985  cd ..
+ 1986  python3 scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1987  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1988* 
+ 1989  cd scripts/
+ 1990  ./create-bootstrap-bucket.sh your-actual-project-id prod-gcp-tf-state-client-b-prod asia-south1
+ 1991  gcloud billing accounts list
+ 1992  ./create-bootstrap-bucket.sh eks-terraform prod-gcp-tf-state-client-b-prod asia-south1
+ 1993  ls
+ 1994  ./create-bootstrap-bucket.sh your-actual-project-id prod-gcp-tf-state-client-b-prod asia-south1
+ 1995  cd ..
+ 1996  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml
+ 1997  ./create-bootstrap-bucket.sh your-actual-project-id prod-gcp-tf-state-client-b-prod asia-south1
+ 1998  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml 
+ 1999  ls
+ 2000  grep -R 'output "' 02-modules -n | grep -E 'vpc|subnet'
+ 2001  gcloud container clusters describe gke-client-b-prod     --region asia-south1     --format="value(workloadIdentityConfig.workloadPool)"
+ 2002  kubectl get nodes 
+ 2003  gcloud container operations list --region=asia-south1 --sort-by="~startTime" --limit=5
+ 2004  gcloud container operations list --region=asia-south1 --sort-by="~startTime" --limit=10
+ 2005  gcloud container operations list --region=asia-south1 --sort-by="~startTime" --limit=10 | grep -i "b-prod"
+ 2006  gcloud container operations describe OPERATION_NAME --region=asia-south1
+ 2007  gcloud container clusters get-credentials gke-client-b-prod --zone=asia-south1-a --project=eks-terraform
+ 2008  gcloud container clusters get-credentials gke-client-b-prod --zone=asia-south1 --project=eks-terraform
+ 2009  kubectl get nodes 
+ 2010  ls
+ 2011  cd 12-platform-config/clients/client-b/
+ 2012  ls
+ 2013  cd ../../
+ 2014  ls
+ 2015  gcloud compute networks describe client-b-prod-vpc   --project=eks-terraform
+ 2016  cd ,,
+ 2017  cd ..
+ 2018  python3 scripts/scaffold_client.py 12-platform-config/clients/client-b/infra/prod.yaml 
+ 2019  gcloud compute networks describe client-b-prod-vpc   --project=eks-terraform
+ 2020  cd scripts/
+ 2021  ./create-bootstrap-bucket.sh eks-terraform prod-gcp-tf-state-client-c-prod asia-south1
+ 2022  cd ..
+ 2023  python3 scripts/scaffold_client.py 12-platform-config/clients/client-c/infra/prod.yaml 
+ 2024  gcloud compute networks describe client-b-prod-vpc   --project=eks-terraform
+ 2025  gcloud compute networks describe client-c-prod-vpc   --project=eks-terraform
+ 2026  python3 scripts/scaffold_client.py 12-platform-config/clients/client-c/infra/prod.yaml 
+ 2027  gcloud compute networks describe client-c-prod-vpc   --project=eks-terraform
+ 2028  gcloud compute networks delete client-c-prod-vpc   --project=eks-terraform
+ 2029  gcloud compute networks describe client-c-prod-vpc   --project=eks-terraform
+ 2030  gcloud compute networks describe client-c-prod-vpc \
+ 2031  gcloud compute networks describe client-c-prod-vpc   --project=eks-terraform
+ 2032  gcloud compute networks delete client-c-prod-vpc   --project=eks-terraform
+ 2033  gcloud compute routers describe client-c-prod-vpc-router   --project=eks-terraform   --region=asia-south1
+ 2034  gcloud compute networks delete client-c-prod-vpc   --project=eks-terraform
+ 2035  python3 scripts/scaffold_client.py 12-platform-config/clients/client-c/infra/prod.yaml 
+ 2036  git status
+ 2037  git add scripts/templates/
+ 2038  git status
+ 2039  git add scripts/
+ 2040  git status
+ 2041  ls
+ 2042  cd 14-sop-documentations/
+ 2043  cat << 'EOF' > DEPLOYMENT_GUIDE.md
+# Multi-Client Infrastructure Deployment Guide
+
+
+Follow this strict step-by-step procedure to provision a new client environment (e.g., Client C) from scratch while preventing state and resource conflict errors.
+
+---
+
+### Step 1: Define Your Client Configuration
+
+Before running any scripts, ensure your client configuration YAML file is set up with the correct project details, region, and state bucket name (e.g., `gcp-gke/12-platform-config/clients/client-c/infra/prod.yaml`).
+
+Example configuration structure:
+```yaml
+client:
+  name: "client-c"
+environment: "prod"
+
+gcp:
+  project_id: "eks-terraform"
+  region: "asia-south1"
+
+bootstrap:
+  state_bucket_name: "prod-gcp-tf-state-client-c-prod"
+  uniform_bucket_level_access: true
+
+ 2044  clear
+ 2045  gcloud container clusters get-credentials gke-client-c-prod --zone=asia-south1-a --project=eks-terraform
+ 2046  kubectl get sc
+ 2047  gcloud container clusters get-credentials gke-client-c-prod --zone=asia-south1 --project=eks-terraform
+ 2048  kubectl get sc
+ 2049  cd ..
+ 2050  ls
+ 2051  history >> scripts/helpful-commands.txt 
