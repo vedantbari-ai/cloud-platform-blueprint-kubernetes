@@ -21,9 +21,9 @@ resource "google_project_service" "apis" {
 resource "google_storage_bucket" "tf_state" {
   name                        = var.state_bucket_name
   location                    = var.region
-  project                     = var.project_id
-  uniform_bucket_level_access = true
-  force_destroy               = false
+  # project                     = var.project_id
+  uniform_bucket_level_access = var.uniform_bucket_level_access
+  force_destroy               = var.force_destroy
 
   versioning {
     enabled = true
@@ -38,7 +38,12 @@ resource "google_storage_bucket" "tf_state" {
     }
   }
 
-  labels = var.tags
+  # 2. Add the ultimate safeguard block:
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  labels = var.tags  # <--- Uncommented for tracking
 
   depends_on = [google_project_service.apis]
 }
