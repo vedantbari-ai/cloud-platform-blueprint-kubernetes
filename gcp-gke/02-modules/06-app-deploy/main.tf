@@ -1,65 +1,103 @@
 locals {
-  gsa_email    = try(var.app_values.serviceAccount.annotations["iam.gke.io/gcp-service-account"], "")
-  gsa_name     = local.gsa_email != "" ? split("@", local.gsa_email)[0] : ""
-  secrets_list = try(var.app_values.secretManager.enabled, false) ? var.app_values.secretManager.secrets : []
+  # Decode JSON and ONLY keep apps where apps.enabled is true (defaults to true if omitted)
+  apps_map = {
+    for k, json_str in var.apps : k => jsondecode(json_str)
+    if try(jsondecode(json_str).apps.enabled, true) == true
+  }
+
+  apps_with_gsa = {
+    for k, app_vals in local.apps_map : k => app_vals
+    if try(app_vals.serviceAccount.annotations["iam.gke.io/gcp-service-account"], "") != ""
+  }
+
+  all_secrets = flatten([
+    for app_key, app_vals in local.apps_map : [
+      for secret in try(app_vals.secretManager.enabled, false) ? app_vals.secretManager.secrets : [] : {
+        key       = "${app_key}-${secret.secretId}"
+        secret_id = secret.secretId
+        value     = secret.secretValue
+        gsa_email = try(app_vals.serviceAccount.annotations["iam.gke.io/gcp-service-account"], "")
+      }
+    ]
+  ])
+  secrets_map = { for s in local.all_secrets : s.key => s }
 }
 
-# 1. Create Google Service Account
+# 1. Create Google Service Accounts per App
 resource "google_service_account" "app_gsa" {
-  count        = local.gsa_name != "" ? 1 : 0
+  for_each     = local.apps_with_gsa
   project      = var.project_id
-  account_id   = local.gsa_name
-  display_name = "GSA for ${var.release_name}"
+  account_id   = split("@", each.value.serviceAccount.annotations["iam.gke.io/gcp-service-account"])[0]
+  display_name = "GSA for ${each.value.releaseName}"
 }
 
-# 2. Bind Workload Identity
+# 2. Bind Workload Identity per App
 resource "google_service_account_iam_member" "workload_identity" {
-  count              = local.gsa_name != "" ? 1 : 0
-  service_account_id = google_service_account.app_gsa[0].name
+  for_each           = local.apps_with_gsa
+  service_account_id = google_service_account.app_gsa[each.key].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.project_id}.svc.id.goog[${var.namespace}/${var.app_values.serviceAccount.name}]"
+  member             = "serviceAccount:${var.project_id}.svc.id.goog[${each.value.namespace.name}/${each.value.serviceAccount.name}]"
 }
 
-# 3. Create Secrets
+# 3. Create Secrets across all discovered apps
 resource "google_secret_manager_secret" "secrets" {
-  for_each  = { for s in local.secrets_list : s.secretId => s }
+  for_each  = local.secrets_map
   project   = var.project_id
-  secret_id = each.value.secretId
+  secret_id = each.value.secret_id
 
-  # Fixed formatting: Moved to multi-line block for better parsing
   replication {
     auto {}
   }
 }
 
 resource "google_secret_manager_secret_version" "secret_versions" {
-  for_each    = { for s in local.secrets_list : s.secretId => s }
+  for_each    = local.secrets_map
   secret      = google_secret_manager_secret.secrets[each.key].id
-  secret_data = each.value.secretValue
+  secret_data = each.value.value
 }
 
-# 4. Grant Secret Access to GSA
+# 4. Grant Secret Access to the respective GSA
 resource "google_secret_manager_secret_iam_member" "secret_access" {
-  for_each  = { for s in local.secrets_list : s.secretId => s }
+  for_each  = local.secrets_map
   project   = var.project_id
   secret_id = google_secret_manager_secret.secrets[each.key].id
   role      = "roles/secretmanager.secretAccessor"
-  # Added a check: only create if email exists to prevent invalid IAM strings
-  member    = "serviceAccount:${local.gsa_email}"
+  member    = "serviceAccount:${each.value.gsa_email}"
+
+  depends_on = [
+    google_service_account.app_gsa
+  ]
 }
 
-# 5. Helm Deployment
+# 5. Create Kubernetes Namespaces per App
+resource "kubernetes_namespace_v1" "app_ns" {
+  for_each = local.apps_map
+
+  metadata {
+    name = each.value.namespace.name
+    labels = {
+      "managed-by" = "terragrunt-helm"
+    }
+  }
+}
+
+# 6. Unified Helm Release Deployment for all apps
 resource "helm_release" "app_deployment" {
-  name             = var.release_name
+  for_each = local.apps_map
+
+  name             = each.value.releaseName
   chart            = var.chart_path
-  namespace        = var.namespace
-  create_namespace = true
-  timeout          = var.timeout
+  namespace        = each.value.namespace.name
+  create_namespace = false
+  timeout          = try(each.value.timeout, 300)
 
-  values = [yamlencode(var.app_values)]
+  values = [
+    yamlencode(each.value)
+  ]
 
-  # Ensure resources are created before Helm tries to mount them
   depends_on = [
+    kubernetes_namespace_v1.app_ns,
+    google_service_account.app_gsa,
     google_service_account_iam_member.workload_identity,
     google_secret_manager_secret_version.secret_versions,
     google_secret_manager_secret_iam_member.secret_access
