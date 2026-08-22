@@ -19,7 +19,7 @@ gcp:
 
 # Dedicated Bootstrap Configuration
 bootstrap:
-  state_bucket_name: "prod-gcp-tf-state-client-c-prod"
+  state_bucket_name: "gcp-tf-state-client-c-prod"
   force_destroy: false
   uniform_bucket_level_access: true
 
