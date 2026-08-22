@@ -22,10 +22,25 @@ dependency "storage-class" {
   }
 }
 
+locals {
+  # 1. Dynamically extract client name and environment from the path structure
+  path_parts  = split("/", get_path_from_repo_root())
+  client_name = length(local.path_parts) >= 4 ? local.path_parts[3] : "client-a"
+  env_name    = length(local.path_parts) >= 5 ? local.path_parts[4] : "dev"
+
+  # 2. Target path reflecting the environment folder structure for monitoring
+  # e.g., 12-platform-config/clients/hdfc-bank/prod/monitoring-and-logging/prod.yaml
+  monitoring_dir = "${get_repo_root()}/gcp-gke/12-platform-config/clients/${local.client_name}/${local.env_name}/monitoring-and-logging"
+  yaml_path      = "${local.monitoring_dir}/${local.env_name}.yaml"
+
+  # 3. STRICT ERROR CHECK: Halt and fail explicitly if the environment yaml does not exist
+  observability_config = yamldecode(file(
+    fileexists(local.yaml_path) ? local.yaml_path : "ERROR: Required monitoring configuration file for environment '${local.env_name}' not found at: ${local.yaml_path}"
+  ))
+}
+
 inputs = {
-  observability_config   = yamldecode(file("${get_repo_root()}/gcp-gke/12-platform-config/clients/client-a/monitoring-and-logging/values.yaml"))
+  observability_config   = local.observability_config
   cluster_endpoint       = dependency.gke.outputs.cluster_endpoint
   cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate
 }
-
-

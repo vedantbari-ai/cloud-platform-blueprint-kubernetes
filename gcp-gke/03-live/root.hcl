@@ -5,7 +5,7 @@ locals {
   env_name    = length(local.path_parts) >= 5 ? local.path_parts[4] : "dev"
 
   # 2. Path to your dev.yaml file inside the infra folder
-  yaml_path   = "${get_repo_root()}/gcp-gke/12-platform-config/clients/${local.client_name}/infra/${local.env_name}.yaml"
+  yaml_path   = "${get_repo_root()}/gcp-gke/12-platform-config/clients/${local.client_name}/${local.env_name}/infra/${local.env_name}.yaml"
   
   # FIX: Use try() instead of a ternary conditional operator to prevent type mismatches
   yaml_data   = try(yamldecode(file(local.yaml_path)), {})
