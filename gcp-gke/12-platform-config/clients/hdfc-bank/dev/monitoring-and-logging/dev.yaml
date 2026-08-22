@@ -61,8 +61,8 @@ monitoring:
       annotations:
         kubernetes.io/ingress.class: gce
 
-      hosts:
-        - "*"
+      # hosts:
+      #   - "*"
 
       path: /
       pathType: Prefix
