@@ -4,6 +4,11 @@
 ##sample example
 # ./create-bootstrap-bucket.sh your-actual-project-id prod-gcp-tf-state-client-b-prod asia-south1
 # ./create-bootstrap-bucket.sh  prod-gcp-tf-state-client-b-prod asia-south1
+# ./create-bootstrap-bucket.sh  eks-terraform gcp-tf-state-hdfc-bank-prod asia-south1
+# ./create-bootstrap-bucket.sh eks-terraform gcp-tf-state-hdfc-bank-dev asia-south1
+
+
+
 
 set -e
 

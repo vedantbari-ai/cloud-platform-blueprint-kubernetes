@@ -2,10 +2,10 @@ apps:
   enabled: true
 
 
-# client:
-#   name: "client-c"
+client:
+  name: "hdfc-bank"
 
-# environment: "prod"
+environment: "prod"
 
 
 releaseName: backend-web-prod

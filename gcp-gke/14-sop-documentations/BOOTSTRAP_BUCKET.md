@@ -40,4 +40,6 @@ gcloud storage buckets update gs://${BUCKET_NAME} --lifecycle-file=lifecycle.jso
 
 
 ##import the bucket in the by running in the bootstrap folder eg: 03-live/clients/client-b/prod/01-bootstrap$
-terragrunt import google_storage_bucket.tf_state prod-gcp-tf-state-client-b-prod
+terragrunt import google_storage_bucket.tf_state gcp-tf-state-hdfc-bank-dev
+
+terragrunt import google_storage_bucket.tf_state gcp-tf-state-hdfc-bank-prod

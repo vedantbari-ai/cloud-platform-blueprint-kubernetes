@@ -3,7 +3,7 @@ apps:
 
 
 client:
-  name: "client-c"
+  name: "hdfc-bank"
 
 environment: "prod"
 
