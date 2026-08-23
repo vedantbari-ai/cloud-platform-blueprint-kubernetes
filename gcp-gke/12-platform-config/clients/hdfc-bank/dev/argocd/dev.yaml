@@ -1,0 +1,16 @@
+server:
+  # Use ClusterIP because the Ingress will handle external traffic entry
+  service:
+    type: ClusterIP  
+    httpPort: 80
+
+  ingress:
+    enabled: true
+    ingressClassName: "gce"
+    annotations:
+      kubernetes.io/ingress.class: "gce"
+    # hosts:
+    #   - argocd.hdfc-bank-prod.internal
+    paths:
+      - /
+    pathType: Prefix
