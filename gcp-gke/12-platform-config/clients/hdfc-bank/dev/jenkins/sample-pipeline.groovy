@@ -2,13 +2,17 @@ pipeline {
     agent {
         label 'docker-agent'
     }
+
     stages {
-        stage('Test Docker-in-Docker Agent') {
+        stage('Test Docker') {
             steps {
                 container('docker') {
-                    sh 'docker version'
-                    sh 'docker info'
-                    echo 'Docker daemon connection established successfully inside the sidecar!'
+                    sh '''
+                        echo "DOCKER_HOST=$DOCKER_HOST"
+                        docker version
+                        docker info
+                        docker run --rm hello-world
+                    '''
                 }
             }
         }
