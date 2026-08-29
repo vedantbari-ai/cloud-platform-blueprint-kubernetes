@@ -4,10 +4,13 @@ controller:
   image:
     registry: "docker.io"
     repository: "jenkins/jenkins"
-    tag: "2.579"
+    tag: "latest-jdk21"
 
   javaOpts: "-Djenkins.install.runSetupWizard=false"
+
   serviceType: "ClusterIP"
+
+  testEnabled: false
 
   admin:
     username: "admin"
@@ -22,57 +25,109 @@ controller:
     storageClass: "standard"
     size: 20Gi
 
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 30
+
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 12
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 90
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 5
+
   installPlugins:
-    - "kubernetes:4253.v7700d91739e5"
-    - "workflow-aggregator:600.vb_57cdd26fdd7"
-    - "git:5.2.2"
-    - "configuration-as-code:2053.vb_0da_47381a_25"
-    - "credentials:1511.v2e3cb_0008ef0"
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - credentials
+    - job-dsl
 
   JCasC:
-    defaultConfig: true
+    defaultConfig: false
     configScripts:
-      jenkins-security: |
+      jenkins-automation-config: |
         jenkins:
           securityRealm:
             local:
               allowsSignup: false
               users:
-                - id: "${controller.admin.username}"
-                  password: "${controller.admin.password}"
+                - id: "$${controller.admin.username}"
+                  password: "$${controller.admin.password}"
+
           authorizationStrategy:
             loggedInUsersCanDoAnything:
               allowAnonymousRead: false
 
-      kubernetes-cloud: |
-        jenkins:
           clouds:
             - kubernetes:
                 name: "kubernetes"
-                serverUrl: "https://kubernetes.default"
+                serverUrl: "${cluster_endpoint}"
+                credentialsId: ""
+                serverCertificate: "${cluster_ca_certificate}"
                 namespace: "jenkins"
                 jenkinsUrl: "http://jenkins.jenkins.svc.cluster.local:8080"
                 jenkinsTunnel: "jenkins-agent.jenkins.svc.cluster.local:50000"
                 containerCapStr: "10"
+
                 templates:
                   - name: "docker-agent"
-                    namespace: "jenkins"
                     label: "docker-agent"
-                    idleMinutes: 0
-                    containers:
-                      - name: "jnlp"
-                        image: "jenkins/inbound-agent:latest"
-                        workingDir: "/home/jenkins/agent"
-                      - name: "docker"
-                        image: "docker:git"
-                        command: "cat"
-                        ttyEnabled: true
-                        privileged: true
-                        workingDir: "/home/jenkins/agent"
-                    volumes:
-                      - hostPathVolume:
-                          hostPath: "/var/run/docker.sock"
-                          mountPath: "/var/run/docker.sock"
+                    namespace: "jenkins"
+
+                    yaml: |
+                      apiVersion: v1
+                      kind: Pod
+
+                      metadata:
+                        labels:
+                          app: jenkins-docker-agent
+
+                      spec:
+                        restartPolicy: Never
+
+                        containers:
+                          - name: jnlp
+                            image: jenkins/inbound-agent:latest
+                            workingDir: /home/jenkins/agent
+
+                          - name: docker
+                            image: docker:27-cli
+                            command:
+                              - cat
+                            tty: true
+                            env:
+                              - name: DOCKER_HOST
+                                value: tcp://localhost:2375
+
+                          - name: docker-dind
+                            image: docker:27-dind
+                            securityContext:
+                              privileged: true
+                            env:
+                              - name: DOCKER_TLS_CERTDIR
+                                value: ""
+                            ports:
+                              - name: docker
+                                containerPort: 2375
+                            volumeMounts:
+                              - name: docker-storage
+                                mountPath: /var/lib/docker
+
+                        volumes:
+                          - name: docker-storage
+                            emptyDir: {}
 
 agent:
-  enabled: true
+  enabled: false
