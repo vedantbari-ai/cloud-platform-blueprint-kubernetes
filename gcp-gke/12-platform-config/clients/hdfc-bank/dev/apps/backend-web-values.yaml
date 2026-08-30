@@ -1,11 +1,17 @@
 apps:
   enabled: true
-
-
 client:
   name: "hdfc-bank"
 
 environment: "dev"
+
+
+jenkinsPipeline:
+  enabled: true
+  gitUrl: "https://github.com/vedant-bari/flask-ci-cd.git"
+  branch: "main"
+  githubCredentialsId: "github-vedant-bari"
+  dockerhubCredentialsId: "dockerhub_id"
 
 
 releaseName: backend-web-dev
@@ -29,7 +35,7 @@ serviceAccount:
 image:
   # Replace this with your actual Artifact Registry or Docker Hub path and tag
   repository: testuser40/sample-flask-app
-  tag: "latest"
+  tag: "b8e1f40"
   pullPolicy: Always # Ensures GKE pulls the fresh image version on deploy
 
 # Note: No "command" or "args" needed here because your image already runs the Flask app internally!
@@ -70,7 +76,7 @@ ingress:
 configMap:
   enabled: true
   data:
-    FLASK_ENV: "devuction"
+    FLASK_ENV: "development"
     PORT: "8000"
     LOG_LEVEL: "info"
 
