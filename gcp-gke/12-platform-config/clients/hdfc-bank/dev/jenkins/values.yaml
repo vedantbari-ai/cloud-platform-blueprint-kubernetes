@@ -1,5 +1,6 @@
 controller:
   component: "jenkins-master"
+  installWizard: false
 
   image:
     registry: "docker.io"
@@ -22,6 +23,7 @@ controller:
 
   persistence:
     enabled: true
+    accessMode: "ReadWriteOnce"
     storageClass: "standard"
     size: 20Gi
 
@@ -53,7 +55,8 @@ controller:
     - configuration-as-code
     - credentials
     - job-dsl
-
+    - pipeline-stage-view
+    
   JCasC:
     defaultConfig: false
     configScripts:

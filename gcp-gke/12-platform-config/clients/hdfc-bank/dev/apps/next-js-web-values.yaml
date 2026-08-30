@@ -1,5 +1,5 @@
 apps:
-  enabled: false
+  enabled: true
 
 
 client:
@@ -7,38 +7,42 @@ client:
 
 environment: "dev"
 
-releaseName: frontend-web-dev
+releaseName: next-js-web-dev
 timeout: 1200
+
+jenkinsPipeline:
+  enabled: true
+  gitUrl: "https://github.com/vedant-bari/sample-next-js.git"
+  branch: "master"
+  githubCredentialsId: "github-vedant-bari"
+  dockerhubCredentialsId: "dockerhub_id"
 
 
 namespace:
   create: true
-  name: frontend-web-dev
+  name: next-js-web-dev
 
 # serviceAccount:
 #   create: true
 # --- GCP IAM & WORKLOAD IDENTITY CONFIG ---
 gcpProject: "eks-terraform"
-googleServiceAccountName: "frontend-web-dev-gsa"
+googleServiceAccountName: "next-js-web-dev-gsa"
 
 serviceAccount:
   create: true
-  name: frontend-web-dev-sa
+  name: next-js-web-dev-sa
   annotations:
-    iam.gke.io/gcp-service-account: "frontend-web-dev-gsa@eks-terraform.iam.gserviceaccount.com"
-
-
-
+    iam.gke.io/gcp-service-account: "next-js-web-dev-gsa@eks-terraform.iam.gserviceaccount.com"
 
 image:
-  repository: nginx
-  tag: "alpine"
+  repository: testuser40/sample-next-js
+  tag: "latest"
   pullPolicy: IfNotPresent
 
 service:
   enabled: true
-  port: 80
-  targetPort: 80
+  port: 3000
+  targetPort: 3000
   type: ClusterIP
 
 # replicaCount: 1
@@ -55,7 +59,7 @@ persistence:
   storageClassName: "hdfc-bank-dev-rwx"
   accessMode: ReadWriteMany
   size: 100Gi
-  mountPath: /var/log/nginx
+  mountPath: /var/log
 
 # --- ADDED INGRESS CONFIGURATION ---
 ingress:
@@ -68,11 +72,11 @@ ingress:
     - paths:
         - path: /
           pathType: Prefix
-      # host: "frontend.local" # Replace with your domain or external IP mapping
+      # host: "next-js.local" # Replace with your domain or external IP mapping
   tls: []
-  #  - secretName: frontend-tls
+  #  - secretName: next-js-tls
   #    hosts:
-  #      - "frontend.local"
+  #      - "next-js.local"
 # -----------------------------------
 
 configMap:
@@ -82,56 +86,48 @@ configMap:
     LOG_LEVEL: "info"
 
 secret:
-  enabled: targetMemoryUtilizationPercentage
-  data:
-    API_KEY: "super-secret-key-123"
-    DB_PASSWORD: "secure-db-password"
+  enabled: false
+  data: {}
 
 # --- GCP SECRET MANAGER INTEGRATION ---
 secretManager:
   enabled: true
   driver: "secrets-store-gke.csi.k8s.io"
   secrets:
-    - secretId: "dev-db-password"
-      secretValue: "my-super-secret-password-123"
-      key: "DB_PASSWORD"
-    - secretId: "dev-api-key"
-      secretValue: "my-super-secret-api-key-456"
-      key: "API_KEY"
-    - secretId: "dev-secret-key"
-      secretValue: "my-super-secret-key-420"
-      key: "SECRET_KEY"  
+    - key: "NEXT_PUBLIC_API_URL"
+      secretId: "NEXT_PUBLIC_API_URL"
+      secretValue: "https://jsonplaceholder.typicode.com/posts/1"
 
 
 
 env:
-  - name: STATIC_ENV_VAR
-    value: "I am set directly in the deployment"
+  - name: NEXT_PUBLIC_API_URL
+    value: "https://jsonplaceholder.typicode.com/posts/1"
 
 probes:
   startup:
     enabled: true
     path: /
-    port: 80
+    port: 3000
   readiness:
     enabled: true
     path: /
-    port: 80
+    port: 3000
   liveness:
     enabled: true
     path: /
-    port: 80
+    port: 3000
 
-securityContext:
-  runAsNonRoot: false
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-    add:
-      - CHOWN
-      - SETUID
-      - SETGID
+# securityContext:
+#   runAsNonRoot: false
+#   allowPrivilegeEscalation: false
+#   capabilities:
+#     drop:
+#       - ALL
+#     add:
+#       - CHOWN
+#       - SETUID
+#       - SETGID
 
 resources:
   requests:

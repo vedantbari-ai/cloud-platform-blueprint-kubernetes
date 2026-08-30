@@ -44,7 +44,7 @@ bastion:
 # GKE Cluster Specifications (Cost-Optimized for R&D)
 gke:
   cluster_name: "gke-hdfc-bank-dev"
-  cluster_version: "1.35.6-gke.1710000"
+  cluster_version: "1.35.7-gke.1027000"
   release_channel: "REGULAR"
   machine_type: "e2-medium"             # Low-cost 2 vCPU / 4 GB RAM instance
   node_count: 1                         # Single node for R&D

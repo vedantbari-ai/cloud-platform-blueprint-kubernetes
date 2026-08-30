@@ -80,7 +80,7 @@ pipeline {
             steps {
                 container('gcloud') {
                     script {
-                        sh "kubectl rollout status deployment/$${env.DEPLOYMENT_NAME} --timeout=180s -n $${env.K8S_NAMESPACE}"
+                        sh "kubectl rollout status deployment/$${env.DEPLOYMENT_NAME} --timeout=300s -n $${env.K8S_NAMESPACE}"
                     }
                 }
             }

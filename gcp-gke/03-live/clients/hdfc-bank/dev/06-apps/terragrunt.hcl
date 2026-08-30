@@ -18,6 +18,10 @@ dependency "gke" {
   }
 }
 
+dependencies {
+  paths = ["../10-jenkins"] # Adjust this path to match your actual Jenkins module directory
+}
+
 locals {
   client_name = include.root.locals.config.client.name
   env_name    = include.root.locals.config.environment
