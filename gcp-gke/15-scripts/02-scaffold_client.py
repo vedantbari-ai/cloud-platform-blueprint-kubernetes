@@ -51,7 +51,8 @@ def generate_terragrunt_files(config_path):
     
     vpc_enabled = config.get('vpc', {}).get('create', False)
     bastion_enabled = config.get('bastion', {}).get('create', False)
-    filestore_enabled = config.get('storage', {}).get('filestore', {}).get('create', False)
+    filestore_enabled = config.get('storage', {}).get('create', False)
+    jenkins_enabled = config.get('jenkins', {}).get('create', False)
 
     config_rel_path = f"../../../../../12-platform-config/clients/{client_name}/infra/{environment}.yaml"
 
@@ -77,6 +78,11 @@ def generate_terragrunt_files(config_path):
     if filestore_enabled:
         storage_content = render_template("storage.hcl.template", config_rel_path)
         write_file_if_changed(os.path.join(live_dir, "07-storage-class", "terragrunt.hcl"), storage_content)
+
+    # 10. Jenkins Layer
+    if jenkins_enabled:
+        jenkins_content = render_template("jenkins.hcl.template", config_rel_path)
+        write_file_if_changed(os.path.join(live_dir, "10-jenkins", "terragrunt.hcl"), jenkins_content)
 
     print(f"🎉 Infrastructure layout synchronization completed successfully for {client_name}!")
 
