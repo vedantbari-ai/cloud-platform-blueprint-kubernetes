@@ -20,7 +20,7 @@ locals {
   env_name    = include.root.locals.config.environment
 
   jenkins_dir        = "${get_repo_root()}/gcp-gke/12-platform-config/clients/${local.client_name}/${local.env_name}/jenkins"
-  yaml_path          = "${local.jenkins_dir}/values.yaml"
+  yaml_path          = "${local.jenkins_dir}/${local.env_name}.yaml"
   dockerhub_username = "testuser40"
   dockerhub_token    = "your-dockerhub-access-token"
 }
