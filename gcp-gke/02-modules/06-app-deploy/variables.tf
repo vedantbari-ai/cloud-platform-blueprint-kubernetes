@@ -64,3 +64,13 @@ variable "apps" {
   type        = map(string)
   description = "Map of app name to JSON-encoded values string"
 }
+
+variable "region" {
+  type        = string
+  description = "Target GCP region for the deployment"
+}
+
+variable "cluster_name" {
+  type        = string
+  description = "Target GKE cluster name"
+}

@@ -3,7 +3,9 @@
 {{- end -}}
 
 {{- define "generic-app.fullname" -}}
-{{- if .Values.fullnameOverride -}}
+{{- if .Values.releaseName -}}
+{{- .Values.releaseName | trunc 63 | trimSuffix "-" -}}
+{{- else if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
@@ -18,7 +20,7 @@
 {{- define "generic-app.labels" -}}
 helm.sh/chart: {{ include "generic-app.chart" . }}
 app.kubernetes.io/name: {{ include "generic-app.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .Values.releaseName | default .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -27,7 +29,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 
 {{- define "generic-app.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "generic-app.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .Values.releaseName | default .Release.Name }}
 {{- end -}}
 
 {{- define "generic-app.serviceAccountName" -}}
