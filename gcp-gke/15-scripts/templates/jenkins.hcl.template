@@ -26,6 +26,7 @@ locals {
 }
 
 inputs = {
+  project_id             = include.root.locals.config.gcp.project_id
   yaml_path              = local.yaml_path
   cluster_endpoint       = dependency.gke.outputs.cluster_endpoint
   cluster_ca_certificate = dependency.gke.outputs.cluster_ca_certificate

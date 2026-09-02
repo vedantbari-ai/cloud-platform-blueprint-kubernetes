@@ -47,7 +47,7 @@ bastion:
 # GKE Cluster Specifications (Production Grade)
 gke:
   cluster_name: "gke-hdfc-bank-prod"
-  cluster_version: "1.35.6-gke.1710000"
+  cluster_version: "1.35.7-gke.1027000"
   release_channel: "REGULAR"
   machine_type: "e2-standard-2"         # Production baseline: 4 vCPU / 16 GB RAM
   node_count: 3                         # Start with 3 nodes for HA
@@ -83,17 +83,23 @@ gke:
 #     horizontal_pod_autoscaling: false
 #     gce_csi_driver: true
 
-
-
-
-# Cloud Filestore
+# Cloud Filestore (Optional: Set create to false if not testing shared NFS)
 storage:
+  create: true
+  ##kubernetes level 
+  storageClassName: "hdfc-bank-prod-rwx"
+  storageProvisioner: "filestore.csi.storage.gke.io"
+  tier: "standard"
+  vpcNetworkName: "hdfc-bank-prod-vpc"
+  
+  ##cloud level
+  # Optional: Filestore options if using managed NFS storage
   filestore:
     create: true
-    tier: "ENTERPRISE"                  # Upgraded to Enterprise tier for Prod
+    tier: "STANDARD"
     file_share_name: "prod_shared_vol"
-    capacity_gb: 2048
+    capacity_gb: 1024
 
 
-
-
+jenkins:
+  create: true
