@@ -10,7 +10,7 @@ terraform {
 dependency "gke" {
   config_path = "../04-gke"
   mock_outputs = {
-    cluster_name = "gke-hdfc-bank-prod"
+    cluster_name = "gke-cluster"
   }
 }
 

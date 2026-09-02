@@ -47,7 +47,6 @@ def generate_apps_files(config_path):
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     live_dir = os.path.join(repo_root, "03-live", "clients", client_name, environment)
     
-    # Check if apps are enabled in config (default to False)
     apps_enabled = config.get('apps', {}).get('enabled', False)
     if not apps_enabled:
         print(f"ℹ️ Applications layer is disabled in the YAML config for {client_name}. Skipping.")
@@ -55,9 +54,13 @@ def generate_apps_files(config_path):
 
     config_rel_path = f"../../../../../12-platform-config/clients/{client_name}/infra/{environment}.yaml"
 
-    # Generate the Applications Layer (e.g., Layer 06-apps)
+    # Generate the Applications Layer (06-apps)
     apps_content = render_template("apps.hcl.template", config_rel_path)
     write_file_if_changed(os.path.join(live_dir, "06-apps", "terragrunt.hcl"), apps_content)
+
+    # Generate the Artifact Registry Layer (05-artifact-registry)
+    artifact_content = render_template("artifact-registry.hcl.template", config_rel_path)
+    write_file_if_changed(os.path.join(live_dir, "05-artifact-registry", "terragrunt.hcl"), artifact_content)
 
     print(f"🎉 Applications layout synchronization completed successfully for {client_name}!")
 
