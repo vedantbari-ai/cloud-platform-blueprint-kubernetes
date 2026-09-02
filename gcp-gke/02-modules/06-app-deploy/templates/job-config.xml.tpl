@@ -12,7 +12,6 @@ pipeline {
 
     environment {
         IMAGE_REPO_NAME     = "${image_repo}"
-        REGISTRY_CREDENTIAL = "${dockerhub_credential}"
         GITHUB_CREDENTIAL   = "${github_credentials}"
         
         GCP_PROJECT         = "${gcp_project}"
@@ -33,30 +32,27 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build and Push to GAR') {
             steps {
-                container('docker') {
-                    script {
-                        sh 'git config --global --add safe.directory $(pwd)'
-                        def dockerTag = sh(label: '', returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                        env.DOCKER_TAG = dockerTag
-                        
+                script {
+                    sh 'git config --global --add safe.directory $(pwd)'
+                    def dockerTag = sh(label: '', returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    env.DOCKER_TAG = dockerTag
+
+                    // 1. Fetch GCP access token using the gcloud container sidecar
+                    def gcpToken = ''
+                    container('gcloud') {
+                        gcpToken = sh(label: '', returnStdout: true, script: 'gcloud auth print-access-token').trim()
+                    }
+                    
+                    // 2. Build and push image using the docker container
+                    container('docker') {
                         sh "docker build . -t $${env.IMAGE_REPO_NAME}:$${env.DOCKER_TAG}"
                         sh "docker tag $${env.IMAGE_REPO_NAME}:$${env.DOCKER_TAG} $${env.IMAGE_REPO_NAME}:latest"
-                    }
-                }
-            }
-        }
-
-        stage('Docker Hub Push') {
-            steps {
-                container('docker') {
-                    withCredentials([usernamePassword(
-                        credentialsId: "$${env.REGISTRY_CREDENTIAL}",
-                        passwordVariable: 'DOCKERHUB_PASSWORD',
-                        usernameVariable: 'DOCKERHUB_USERNAME'
-                    )]) {
-                        sh 'docker login -u "$DOCKERHUB_USERNAME" -p "$DOCKERHUB_PASSWORD"'
+                        
+                        // Authenticate Docker directly to GAR using the fetched token
+                        sh "echo '$${gcpToken}' | docker login -u oauth2accesstoken --password-stdin https://$${env.GCP_REGION}-docker.pkg.dev"
+                        
                         sh "docker push $${env.IMAGE_REPO_NAME}:$${env.DOCKER_TAG}"
                         sh "docker push $${env.IMAGE_REPO_NAME}:latest"
                     }
@@ -68,7 +64,7 @@ pipeline {
             steps {
                 container('gcloud') {
                     script {
-                         // Automatically install kubectl component in the Alpine gcloud container
+                        // Automatically install kubectl component in the Alpine gcloud container
                         sh "gcloud components install kubectl --quiet || true"
                         sh "kubectl set image deployment/$${env.DEPLOYMENT_NAME} $${env.CONTAINER_NAME}=$${env.IMAGE_REPO_NAME}:$${env.DOCKER_TAG} -n $${env.K8S_NAMESPACE}"
                     }
